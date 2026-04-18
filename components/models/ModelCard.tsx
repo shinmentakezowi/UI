@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { TrendingUp, ArrowRight } from "lucide-react";
+import { Copy, Check, Sparkles } from "lucide-react";
 import Image from "next/image";
 
 interface ModelCardProps {
@@ -9,135 +9,156 @@ interface ModelCardProps {
     id: string;
     provider: string;
     name: string;
-    inputPrice: string;
-    outputPrice: string;
     context: string;
     icon: any;
     color: string;
+    accent: string;
     gradient: string;
     logo?: string;
     popular?: boolean;
-    speed: string;
+    description?: string;
   };
   index: number;
   onClick: () => void;
+  copied?: boolean;
 }
 
-export function ModelCard({ model, index, onClick }: ModelCardProps) {
+function formatModelName(id: string): string {
+  return id
+    .replace(/-\d{8}$/, "")
+    .replace(/-latest$/, "")
+    .replace(/-instruct$/, "");
+}
+
+const providerLabels: Record<string, string> = {
+  ANTHROPIC: "Anthropic",
+  OPENAI: "OpenAI",
+  GOOGLE: "Google",
+  XAI: "xAI",
+  DEEPSEEK: "DeepSeek",
+  MISTRAL: "Mistral",
+  META: "Meta",
+  ALIBABA: "Qwen",
+  ZHIPU: "Zhipu",
+  MOONSHOT: "Moonshot",
+  COHERE: "Cohere",
+  PERPLEXITY: "Perplexity",
+  OTHER: "Other",
+};
+
+export function ModelCard({ model, index, onClick, copied }: ModelCardProps) {
+  const displayName = formatModelName(model.name);
+  const providerLabel = providerLabels[model.provider] || model.provider;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      layout
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.05 * index }}
-      whileHover={{ y: -8, scale: 1.02 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ delay: Math.min(0.03 * index, 0.6), duration: 0.3 }}
+      whileHover={{ y: -4 }}
       className="relative group cursor-pointer"
       onClick={onClick}
     >
-      {/* Glow Effect */}
-      <div className={`absolute -inset-1 rounded-2xl blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-500 bg-gradient-to-br ${model.gradient}`} />
+      {/* Hover glow */}
+      <div
+        className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, ${model.accent}15, transparent 70%)`,
+        }}
+      />
 
-      {/* Card Container */}
-      <div className="relative flex flex-col h-full p-1 rounded-2xl bg-gradient-to-br from-white/10 to-white/5">
-        {/* Top Accent Line */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-gradient-to-r from-transparent via-violet-500 to-transparent blur-sm" />
+      {/* Card */}
+      <div className="relative h-full rounded-2xl bg-[#0A0A0A] border border-white/[0.06] group-hover:border-white/[0.12] transition-all duration-300 overflow-hidden">
+        {/* Top accent line */}
+        <div
+          className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${model.accent}60, transparent)`,
+          }}
+        />
 
-        <div className="h-full bg-[#0A0A0A] rounded-xl p-6 flex flex-col relative overflow-hidden border border-white/10 group-hover:border-violet-500/30 transition-all">
-          {/* Animated Grid Pattern */}
-          <motion.div
-            className="absolute inset-0 opacity-10"
-            animate={{
-              backgroundPosition: ['0% 0%', '100% 100%'],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              repeatType: "reverse"
-            }}
-            style={{
-              backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)',
-              backgroundSize: '20px 20px'
-            }}
-          />
-
-          <div className="relative z-10">
-            {/* Header */}
-            <div className="flex items-start justify-between mb-4">
-              <div className="relative w-14 h-14 rounded-xl group-hover:scale-110 transition-transform duration-300">
+        <div className="p-5">
+          {/* Header row */}
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              {/* Logo */}
+              <div className="relative w-10 h-10 rounded-xl flex items-center justify-center bg-white/[0.04] border border-white/[0.08] group-hover:border-white/[0.15] transition-all shrink-0">
                 {model.logo ? (
-                  <>
-                    <div className="absolute inset-0 rounded-xl bg-white/5 blur-md" />
-                    <div className="relative w-full h-full rounded-xl bg-white/10 border border-white/20 flex items-center justify-center p-2.5 shadow-xl backdrop-blur-sm">
-                      <Image 
-                        src={model.logo} 
-                        alt={`${model.provider} logo`}
-                        width={32}
-                        height={32}
-                        className="object-contain"
-                        unoptimized
-                      />
-                    </div>
-                  </>
+                  <Image
+                    src={model.logo}
+                    alt=""
+                    width={22}
+                    height={22}
+                    className="object-contain"
+                  />
                 ) : (
-                  <>
-                    <div className="absolute inset-0 rounded-xl bg-white/5 blur-md" />
-                    <div className={`relative w-full h-full rounded-xl bg-white/10 border border-white/20 flex items-center justify-center ${model.color} shadow-xl`}>
-                      <model.icon className="w-7 h-7" />
-                    </div>
-                  </>
+                  <model.icon
+                    className={`w-5 h-5 ${model.color}`}
+                  />
                 )}
               </div>
-              <div className="flex flex-col items-end gap-2">
-                {model.popular && (
-                  <span className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-violet-500/30 to-cyan-500/30 border border-violet-500/50 text-violet-400 text-[9px] font-mono font-bold uppercase tracking-wider flex items-center gap-1 shadow-lg shadow-violet-500/20">
-                    <TrendingUp className="w-3 h-3" />
-                    Popular
+              {/* Provider */}
+              <div>
+                <p className="text-[11px] text-gray-500 font-medium uppercase tracking-wider leading-none mb-1">
+                  {providerLabel}
+                </p>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-mono text-gray-400 px-1.5 py-0.5 rounded bg-white/[0.04] border border-white/[0.06]">
+                    {model.context}
                   </span>
-                )}
-                <span className="text-[10px] font-mono text-gray-400 uppercase tracking-wider px-2 py-1 bg-white/5 rounded border border-white/10">
-                  {model.context}
-                </span>
-              </div>
-            </div>
-
-            {/* Model Info */}
-            <h3 className="text-xl font-bold text-white mb-1 group-hover:text-violet-400 transition-colors line-clamp-1">
-              {model.name}
-            </h3>
-            <div className="flex items-center gap-2 mb-4">
-              <p className="text-xs text-gray-400 font-mono">{model.provider}</p>
-              <span className="w-1 h-1 rounded-full bg-gray-600" />
-              <span className="text-[10px] text-gray-500 font-mono uppercase">{model.speed}</span>
-            </div>
-
-            {/* Pricing */}
-            <div className="space-y-3 pt-4 border-t border-white/10 mb-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.6)]" />
-                  <span className="text-sm text-gray-400 font-mono">Input</span>
+                  {model.popular && (
+                    <span className="flex items-center gap-0.5 text-[10px] font-medium text-amber-400/80 px-1.5 py-0.5 rounded bg-amber-500/[0.08] border border-amber-500/[0.12]">
+                      <Sparkles className="w-2.5 h-2.5" />
+                      Popular
+                    </span>
+                  )}
                 </div>
-                <span className="text-emerald-400 font-mono font-bold text-sm">{model.inputPrice}/1M</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.6)]" />
-                  <span className="text-sm text-gray-400 font-mono">Output</span>
-                </div>
-                <span className="text-cyan-400 font-mono font-bold text-sm">{model.outputPrice}/1M</span>
               </div>
             </div>
 
-            {/* CTA Button */}
-            <button 
-              className="relative w-full py-3 font-mono text-sm font-bold tracking-wider transition-all overflow-hidden group/btn text-white mt-auto rounded-lg"
+            {/* Copy button */}
+            <button
+              className={`p-1.5 rounded-lg transition-all ${
+                copied
+                  ? "bg-emerald-500/15 text-emerald-400"
+                  : "text-gray-600 opacity-0 group-hover:opacity-100 hover:bg-white/[0.06] hover:text-gray-400"
+              }`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onClick();
+              }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/10 group-hover/btn:from-violet-500/20 group-hover/btn:to-cyan-500/20 border border-white/20 group-hover/btn:border-violet-500/50 transition-all duration-300 rounded-lg" />
-              <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-30 bg-gradient-to-r from-transparent via-white to-transparent -skew-x-12 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700 ease-in-out" />
-              <span className="relative z-10 flex items-center justify-center gap-2">
-                View Details <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-              </span>
+              {copied ? (
+                <Check className="w-3.5 h-3.5" />
+              ) : (
+                <Copy className="w-3.5 h-3.5" />
+              )}
             </button>
           </div>
+
+          {/* Model name */}
+          <h3 className="text-[15px] font-semibold text-gray-100 group-hover:text-white transition-colors mb-2 leading-tight truncate">
+            {displayName}
+          </h3>
+
+          {/* Description */}
+          {model.description && (
+            <p className="text-xs text-gray-500 leading-relaxed line-clamp-2 group-hover:text-gray-400 transition-colors">
+              {model.description}
+            </p>
+          )}
+        </div>
+
+        {/* Bottom bar */}
+        <div className="px-5 py-3 border-t border-white/[0.04] bg-white/[0.01] flex items-center justify-between">
+          <code className="text-[10px] font-mono text-gray-600 truncate max-w-[70%] group-hover:text-gray-500 transition-colors">
+            {model.id}
+          </code>
+          <span className="text-[10px] text-gray-600 group-hover:text-gray-500 transition-colors shrink-0 ml-2">
+            Click to copy
+          </span>
         </div>
       </div>
     </motion.div>

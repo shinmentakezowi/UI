@@ -32,8 +32,9 @@ export async function Footer() {
 
       <div className="relative text-center select-none overflow-hidden h-28 sm:h-40">
         <div
-          className="absolute inset-x-0 bottom-0 text-[80px] sm:text-[120px] md:text-[160px] font-black leading-none tracking-tighter text-transparent pointer-events-none"
+          className="absolute inset-x-0 text-[80px] sm:text-[120px] md:text-[160px] font-black leading-none tracking-tighter text-transparent pointer-events-none"
           style={{
+            bottom: "10%",
             WebkitTextStroke: "1px rgba(255,255,255,0.04)",
             background: "linear-gradient(to bottom, rgba(124,58,237,0.15), transparent)",
             WebkitBackgroundClip: "text",
