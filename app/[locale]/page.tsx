@@ -1,5 +1,3 @@
-import { Link } from "@/i18n/routing";
-import { ArrowRight, Star } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { FadeIn } from "@/components/FadeIn";
 import { AnimatedStats } from "@/components/AnimatedStats";
@@ -10,7 +8,14 @@ import { QuickStart } from "@/components/landing/QuickStart";
 import { LandingPricing } from "@/components/landing/LandingPricing";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { Footer } from "@/components/landing/Footer";
-import { MeshBackground } from "@/components/MeshBackground";
+import { HeroBackground } from "@/components/HeroBackground";
+import { HeroCTAButtons } from "@/components/landing/HeroCTAButtons";
+import { HeroHeadline } from "@/components/landing/HeroHeadline";
+import { HeroTerminal } from "@/components/landing/HeroTerminal";
+import { HUDOverlay } from "@/components/landing/HUDOverlay";
+import { HeroScrollIndicator } from "@/components/landing/HeroScrollIndicator";
+import { HeroSubtitle } from "@/components/landing/HeroSubtitle";
+import { HeroTrustBar } from "@/components/landing/HeroTrustBar";
 import { fetchModelsData, PROVIDER_ORDER, PROVIDER_DISPLAY } from "@/lib/models";
 import { getTranslations } from "next-intl/server";
 
@@ -25,56 +30,60 @@ export default async function LandingPage() {
   const tc = await getTranslations("common");
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-zinc-100 overflow-x-hidden">
-      <MeshBackground />
+    <div className="min-h-screen bg-[#0a0a0a] text-zinc-100 overflow-x-hidden selection:bg-violet-500/30 selection:text-white">
       <Navbar />
 
-      {/* Hero */}
-      <section className="pt-40 sm:pt-52 pb-20 sm:pb-28 text-center px-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-white/[0.08] bg-white/[0.03] text-xs text-zinc-400 mb-8">
-          <Star className="w-3 h-3 text-violet-400" />
-          {t("badge")}
+      {/* Hero — 2-column layout like wiwi */}
+      <section className="w-full min-h-screen flex items-center relative px-4 pt-20 overflow-hidden bg-[#050505]">
+        <HeroBackground />
+        <HUDOverlay />
+
+        {/* Mobile terminal bg (faded behind text on small screens) */}
+        <div className="absolute inset-0 z-0 flex items-center justify-center opacity-10 lg:hidden pointer-events-none">
+          <div className="w-full max-w-[90%] scale-75 sm:scale-90">
+            <HeroTerminal />
+          </div>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6 max-w-3xl mx-auto">
-          {t("heroLine1")}{" "}
-          <br className="hidden sm:block" />
-          <span className="bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">
-            {t("heroLine2")}
-          </span>
-        </h1>
+        {/* 2-column grid */}
+        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-24 items-center relative z-10">
+          {/* Left — Text content */}
+          <HeroLeftContent
+            line1={t("heroLine1")}
+            line2={t("heroLine2")}
+            subtitleRich={t.rich("subtitle", {
+              price: (chunks) => `{{price}}${chunks}{{/price}}`,
+            }) as string}
+            getApiKeyLabel={tc("getApiKey")}
+            quickStartLabel={tc("quickStart")}
+          />
 
-        <p className="text-sm sm:text-base text-zinc-500 max-w-md mx-auto mb-10 leading-relaxed">
-          {t.rich("subtitle", {
-            price: (chunks) => <span className="text-zinc-300">{chunks}</span>,
-          })}
-        </p>
-
-        <div className="flex items-center justify-center gap-3">
-          <Link href="/login" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white text-black text-sm font-semibold hover:bg-zinc-100 transition-colors shadow-lg cursor-pointer">
-            {tc("getApiKey")}
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-          <a href="#quickstart" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] text-zinc-300 text-sm font-medium transition-colors cursor-pointer">
-            {tc("quickStart")}
-          </a>
+          {/* Right — Interactive Terminal (desktop only) */}
+          <div className="relative hidden lg:block -mt-16">
+            <HeroTerminal />
+          </div>
         </div>
+
+        <HeroScrollIndicator />
       </section>
 
       {/* Stats */}
-      <section className="pb-16 sm:pb-20 px-4">
+      <section id="stats" className="py-20 sm:py-28 px-4 relative">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[1px] bg-gradient-to-r from-transparent via-violet-500/20 to-transparent" />
         <FadeIn>
           <AnimatedStats />
         </FadeIn>
       </section>
 
       {/* Provider ticker */}
-      <div className="border-y border-white/[0.05] overflow-hidden py-3.5 select-none">
+      <div className="relative border-y border-white/[0.05] overflow-hidden py-4 select-none">
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10" />
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10" />
         <div className="flex" style={{ animation: "ticker 35s linear infinite" }}>
           {[0, 1].map(i => (
             <div key={i} aria-hidden={i === 1} className="flex shrink-0">
               {providers.map(name => (
-                <span key={name} className="px-8 text-[13px] text-zinc-600 font-medium whitespace-nowrap">
+                <span key={name} className="px-10 text-[13px] text-zinc-500 font-medium whitespace-nowrap tracking-wide">
                   {name}
                 </span>
               ))}
@@ -97,6 +106,32 @@ export default async function LandingPage() {
       <FAQSection />
       <Footer />
       <ScrollToTop />
+    </div>
+  );
+}
+
+function HeroLeftContent({
+  line1,
+  line2,
+  subtitleRich,
+  getApiKeyLabel,
+  quickStartLabel,
+}: {
+  line1: string;
+  line2: string;
+  subtitleRich: string;
+  getApiKeyLabel: string;
+  quickStartLabel: string;
+}) {
+  return (
+    <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-8">
+      <HeroHeadline line1={line1} line2={line2} />
+      <HeroSubtitle subtitleRich={subtitleRich} />
+      <HeroCTAButtons
+        getApiKeyLabel={getApiKeyLabel}
+        quickStartLabel={quickStartLabel}
+      />
+      <HeroTrustBar />
     </div>
   );
 }

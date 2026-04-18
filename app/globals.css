@@ -125,6 +125,69 @@
   50% { opacity: 1; }
 }
 
+@keyframes nav-lazy-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-nav-lazy-in {
+  animation: nav-lazy-in 0.5s ease-out;
+}
+
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 15px) scale(0.95); }
+}
+
+@keyframes orb-drift-slow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40px, 30px) scale(1.1); }
+}
+
+@keyframes orb-drift-reverse {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-25px, -15px) scale(1.05); }
+  66% { transform: translate(20px, 25px) scale(0.95); }
+}
+
+.animate-orb-drift {
+  animation: orb-drift 12s ease-in-out infinite;
+}
+
+.animate-orb-drift-slow {
+  animation: orb-drift-slow 18s ease-in-out infinite;
+}
+
+.animate-orb-drift-reverse {
+  animation: orb-drift-reverse 15s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s ease-in-out infinite;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -144,6 +207,224 @@
   0%, 100% { transform: translate(0, 0); }
   33% { transform: translate(80px, -60px); }
   66% { transform: translate(-40px, 80px); }
+}
+
+/* ── Wiwi / Cyberpunk Utilities ── */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.rotate-x-12 {
+  transform: rotateX(12deg);
+}
+
+.bg-grid-white {
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+.clip-path-slant {
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 95% 100%, 0 100%);
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ── Glass Card ── */
+.glass-card {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: border-color 0.3s;
+}
+
+.glass-card:hover {
+  border-color: rgba(124, 58, 237, 0.5);
+}
+
+/* ── Neon Text ── */
+.neon-text {
+  text-shadow: 0 0 10px rgba(124, 58, 237, 0.5), 0 0 20px rgba(124, 58, 237, 0.3);
+}
+
+.text-shadow-neon {
+  text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+}
+
+/* ── Neon Border ── */
+.neon-border {
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.2), inset 0 0 10px rgba(124, 58, 237, 0.1);
+}
+
+/* ── Card Shine ── */
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.card-shine:hover::before {
+  left: 100%;
+}
+
+/* ── Glitch Effect ── */
+.glitch-wrapper {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -1px 0 #00f3ff;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -1px 0 #ff00c1;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(31px, 9999px, 94px, 0); transform: skew(0.85deg); }
+  5% { clip: rect(70px, 9999px, 11px, 0); transform: skew(0.85deg); }
+  10% { clip: rect(26px, 9999px, 91px, 0); transform: skew(0.06deg); }
+  15% { clip: rect(4px, 9999px, 91px, 0); transform: skew(0.26deg); }
+  20% { clip: rect(8px, 9999px, 37px, 0); transform: skew(0.96deg); }
+  25% { clip: rect(54px, 9999px, 93px, 0); transform: skew(0.39deg); }
+  30% { clip: rect(48px, 9999px, 49px, 0); transform: skew(0.09deg); }
+  35% { clip: rect(6px, 9999px, 73px, 0); transform: skew(0.14deg); }
+  40% { clip: rect(36px, 9999px, 4px, 0); transform: skew(0.02deg); }
+  45% { clip: rect(15px, 9999px, 11px, 0); transform: skew(0.25deg); }
+  50% { clip: rect(56px, 9999px, 52px, 0); transform: skew(0.93deg); }
+  55% { clip: rect(2px, 9999px, 64px, 0); transform: skew(0.88deg); }
+  60% { clip: rect(75px, 9999px, 97px, 0); transform: skew(0.69deg); }
+  65% { clip: rect(38px, 9999px, 6px, 0); transform: skew(0.07deg); }
+  70% { clip: rect(84px, 9999px, 93px, 0); transform: skew(0.92deg); }
+  75% { clip: rect(65px, 9999px, 70px, 0); transform: skew(0.19deg); }
+  80% { clip: rect(41px, 9999px, 8px, 0); transform: skew(0.01deg); }
+  85% { clip: rect(36px, 9999px, 13px, 0); transform: skew(0.35deg); }
+  90% { clip: rect(31px, 9999px, 57px, 0); transform: skew(0.34deg); }
+  95% { clip: rect(46px, 9999px, 47px, 0); transform: skew(0.69deg); }
+  100% { clip: rect(66px, 9999px, 46px, 0); transform: skew(0.56deg); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(65px, 9999px, 100px, 0); transform: skew(0.81deg); }
+  5% { clip: rect(5px, 9999px, 79px, 0); transform: skew(0.51deg); }
+  10% { clip: rect(90px, 9999px, 9px, 0); transform: skew(0.83deg); }
+  15% { clip: rect(60px, 9999px, 65px, 0); transform: skew(0.28deg); }
+  20% { clip: rect(5px, 9999px, 83px, 0); transform: skew(0.64deg); }
+  25% { clip: rect(26px, 9999px, 5px, 0); transform: skew(0.96deg); }
+  30% { clip: rect(81px, 9999px, 83px, 0); transform: skew(0.95deg); }
+  35% { clip: rect(13px, 9999px, 86px, 0); transform: skew(0.43deg); }
+  40% { clip: rect(77px, 9999px, 5px, 0); transform: skew(0.59deg); }
+  45% { clip: rect(67px, 9999px, 52px, 0); transform: skew(0.5deg); }
+  50% { clip: rect(39px, 9999px, 22px, 0); transform: skew(0.55deg); }
+  55% { clip: rect(7px, 9999px, 27px, 0); transform: skew(0.22deg); }
+  60% { clip: rect(37px, 9999px, 94px, 0); transform: skew(0.31deg); }
+  65% { clip: rect(48px, 9999px, 96px, 0); transform: skew(0.39deg); }
+  70% { clip: rect(36px, 9999px, 47px, 0); transform: skew(0.5deg); }
+  75% { clip: rect(16px, 9999px, 18px, 0); transform: skew(0.17deg); }
+  80% { clip: rect(21px, 9999px, 68px, 0); transform: skew(0.9deg); }
+  85% { clip: rect(99px, 9999px, 52px, 0); transform: skew(0.55deg); }
+  90% { clip: rect(69px, 9999px, 34px, 0); transform: skew(0.6deg); }
+  95% { clip: rect(61px, 9999px, 83px, 0); transform: skew(0.46deg); }
+  100% { clip: rect(39px, 9999px, 44px, 0); transform: skew(0.68deg); }
+}
+
+/* ── Scrollbar (Cyberpunk liquid flow) ── */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #000000 0%,
+    #7c3aed 20%,
+    #a855f7 50%,
+    #7c3aed 80%,
+    #000000 100%
+  );
+  background-size: 100% 300%;
+  border-radius: 5px;
+  border: 2px solid #000000;
+  animation: liquid-flow 4s ease-in-out infinite;
+  box-shadow:
+    inset 0 0 10px rgba(124, 58, 237, 0.4),
+    0 0 10px rgba(124, 58, 237, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    #000000 0%,
+    #a78bfa 20%,
+    #c084fc 50%,
+    #a78bfa 80%,
+    #000000 100%
+  );
+  background-size: 100% 300%;
+  animation: liquid-flow 2.5s ease-in-out infinite;
+  box-shadow:
+    inset 0 0 15px rgba(124, 58, 237, 0.6),
+    0 0 20px rgba(124, 58, 237, 0.4);
+}
+
+@keyframes liquid-flow {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 0% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* ── Scrollbar hide ── */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ── 3D transforms ── */
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
 }
 
 /* ── Reduced Motion ── */
