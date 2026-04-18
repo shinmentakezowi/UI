@@ -1,106 +1,299 @@
+"use client";
+
 import { Link } from "@/i18n/routing";
-import { ArrowRight, Cpu, Star, Sparkles, Zap, Globe } from "lucide-react";
-import { FadeIn } from "@/components/FadeIn";
+import { ArrowRight, Crown } from "lucide-react";
+import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { FEATURED_MODELS } from "@/lib/featured-models";
-import { getTranslations } from "next-intl/server";
+import {
+  AnthropicIcon,
+  OpenAIIcon,
+  GoogleIcon,
+  ZhipuIcon,
+  XAIIcon,
+} from "@/components/icons/providers";
+import type { SVGProps } from "react";
 
-const PROVIDER_ICON: Record<string, React.ReactNode> = {
-  Anthropic: <Star className="w-4 h-4" />,
-  OpenAI:    <Sparkles className="w-4 h-4" />,
-  Google:    <Zap className="w-4 h-4" />,
-  xAI:       <Globe className="w-4 h-4" />,
-  Zhipu:     <Cpu className="w-4 h-4" />,
+type IconProps = SVGProps<SVGSVGElement> & { size?: number };
+
+interface ProviderTheme {
+  Icon: (props: IconProps) => React.ReactElement;
+  color: string;
+  gradient: string;
+  bg: string;
+}
+
+const PROVIDER_THEMES: Record<string, ProviderTheme> = {
+  Anthropic: {
+    Icon: AnthropicIcon,
+    color: "#D19B75",
+    gradient: "from-amber-500/20 via-orange-500/10 to-transparent",
+    bg: "rgba(209,155,117,0.08)",
+  },
+  OpenAI: {
+    Icon: OpenAIIcon,
+    color: "#10a37f",
+    gradient: "from-emerald-500/20 via-green-500/10 to-transparent",
+    bg: "rgba(16,163,127,0.08)",
+  },
+  Google: {
+    Icon: GoogleIcon,
+    color: "#4285F4",
+    gradient: "from-blue-500/20 via-blue-400/10 to-transparent",
+    bg: "rgba(66,133,244,0.08)",
+  },
+  Zhipu: {
+    Icon: ZhipuIcon,
+    color: "#1679FF",
+    gradient: "from-blue-600/20 via-indigo-500/10 to-transparent",
+    bg: "rgba(22,121,255,0.08)",
+  },
+  xAI: {
+    Icon: XAIIcon,
+    color: "#E0E0E0",
+    gradient: "from-zinc-400/20 via-zinc-500/10 to-transparent",
+    bg: "rgba(224,224,224,0.06)",
+  },
 };
 
-const PROVIDER_BADGE_COLOR: Record<string, string> = {
-  Anthropic: "violet",
-  OpenAI:    "emerald",
-  Google:    "blue",
-  Zhipu:     "rose",
-  xAI:       "zinc",
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
+  },
 };
 
-const BADGE_COLORS: Record<string, string> = {
-  violet:  "bg-violet-500/15 text-violet-400 border-violet-500/20",
-  emerald: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
-  blue:    "bg-blue-500/15   text-blue-400   border-blue-500/20",
-  zinc:    "bg-zinc-500/15   text-zinc-400   border-zinc-500/20",
-  rose:    "bg-rose-500/15   text-rose-400   border-rose-500/20",
+const itemVariants = {
+  hidden: { opacity: 0, y: 24, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: "spring" as const, stiffness: 120, damping: 20 },
+  },
 };
 
-export async function FeaturedModels() {
-  const t = await getTranslations("featuredModels");
+function HeroModelCard({ model }: { model: (typeof FEATURED_MODELS)[0] }) {
+  const theme = PROVIDER_THEMES[model.provider];
+  const Icon = theme?.Icon;
 
   return (
-    <section id="models" className="py-20 sm:py-28 px-4 scroll-mt-20">
-      <FadeIn>
-      <div className="max-w-2xl mx-auto">
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-white/[0.08] bg-white/[0.03] text-xs text-zinc-400">
-            <Star className="w-3 h-3 text-violet-400" />
+    <motion.div variants={itemVariants} className="col-span-1 md:col-span-2">
+      <Link
+        href="/login"
+        className="group relative block rounded-2xl overflow-hidden cursor-pointer"
+      >
+        {/* Animated border glow */}
+        <div
+          className="absolute -inset-[1px] rounded-2xl opacity-40 group-hover:opacity-70 transition-opacity duration-500 blur-[1px]"
+          style={{
+            background: `linear-gradient(135deg, ${theme?.color}60, transparent 60%)`,
+          }}
+        />
+
+        {/* Card body */}
+        <div className="relative rounded-2xl bg-[#0a0a0f]/95 backdrop-blur-xl border border-white/[0.06] p-6 sm:p-8 transition-all duration-300 group-hover:border-white/[0.12]">
+          {/* Background radial glow */}
+          <div
+            className={`absolute inset-0 bg-gradient-to-br ${theme?.gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}
+          />
+
+          <div className="relative flex flex-col sm:flex-row sm:items-start gap-5">
+            {/* Provider logo */}
+            <motion.div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border border-white/[0.08]"
+              style={{ background: theme?.bg }}
+              whileHover={{ rotate: [0, -5, 5, 0] }}
+              transition={{ duration: 0.4 }}
+            >
+              {Icon && (
+                <div style={{ filter: `drop-shadow(0 0 8px ${theme?.color}50)` }}>
+                  <Icon size={28} />
+                </div>
+              )}
+            </motion.div>
+
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2.5 mb-2 flex-wrap">
+                <span className="text-lg sm:text-xl font-bold text-white">
+                  {model.name}
+                </span>
+                <span
+                  className="text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider border"
+                  style={{
+                    color: theme?.color,
+                    borderColor: `${theme?.color}30`,
+                    background: `${theme?.color}12`,
+                  }}
+                >
+                  {model.provider}
+                </span>
+                {model.badge && (
+                  <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center gap-1">
+                    <Crown className="w-2.5 h-2.5" />
+                    {model.badge}
+                  </span>
+                )}
+              </div>
+              <p className="text-sm text-zinc-400 leading-relaxed max-w-lg">
+                {model.description}
+              </p>
+            </div>
+
+            <ArrowRight
+              className="w-5 h-5 text-zinc-600 group-hover:text-white group-hover:translate-x-1 transition-all duration-300 shrink-0 self-center hidden sm:block"
+            />
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+function ModelCard({ model }: { model: (typeof FEATURED_MODELS)[0] }) {
+  const theme = PROVIDER_THEMES[model.provider];
+  const Icon = theme?.Icon;
+
+  return (
+    <motion.div variants={itemVariants}>
+      <Link
+        href="/login"
+        className="group relative block rounded-2xl overflow-hidden cursor-pointer h-full"
+      >
+        {/* Border glow */}
+        <div
+          className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-500 blur-[1px]"
+          style={{
+            background: `linear-gradient(135deg, ${theme?.color}50, transparent 60%)`,
+          }}
+        />
+
+        {/* Card body */}
+        <div className="relative h-full rounded-2xl bg-[#0a0a0f]/90 backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 transition-all duration-300 group-hover:border-white/[0.12] group-hover:-translate-y-1">
+          {/* Subtle bg glow */}
+          <div
+            className={`absolute inset-0 bg-gradient-to-br ${theme?.gradient} opacity-0 group-hover:opacity-80 transition-opacity duration-500 rounded-2xl`}
+          />
+
+          <div className="relative flex flex-col h-full">
+            {/* Top: Logo + Provider */}
+            <div className="flex items-center justify-between mb-4">
+              <motion.div
+                className="w-11 h-11 rounded-xl flex items-center justify-center border border-white/[0.08]"
+                style={{ background: theme?.bg }}
+                whileHover={{ scale: 1.1 }}
+              >
+                {Icon && (
+                  <div style={{ filter: `drop-shadow(0 0 6px ${theme?.color}40)` }}>
+                    <Icon size={22} />
+                  </div>
+                )}
+              </motion.div>
+              <span
+                className="text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider border"
+                style={{
+                  color: theme?.color,
+                  borderColor: `${theme?.color}25`,
+                  background: `${theme?.color}10`,
+                }}
+              >
+                {model.provider}
+              </span>
+            </div>
+
+            {/* Model name */}
+            <h3 className="text-base font-bold text-white mb-1.5">
+              {model.name}
+            </h3>
+
+            {/* Description */}
+            <p className="text-xs text-zinc-500 leading-relaxed flex-1">
+              {model.description}
+            </p>
+
+            {/* Bottom arrow */}
+            <div className="flex items-center gap-1.5 mt-4 text-xs text-zinc-600 group-hover:text-zinc-300 transition-colors duration-300">
+              <span className="font-medium">Try now</span>
+              <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+export function FeaturedModels() {
+  const t = useTranslations("featuredModels");
+  const featured = FEATURED_MODELS.filter((m) => m.badge);
+  const others = FEATURED_MODELS.filter((m) => !m.badge);
+
+  return (
+    <section id="models" className="py-24 sm:py-32 px-4 scroll-mt-20 relative">
+      {/* Background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-500/[0.03] rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="max-w-5xl mx-auto relative">
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-14"
+        >
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-violet-500/20 bg-violet-500/[0.06] text-xs text-violet-400 font-medium mb-6">
+            <Crown className="w-3 h-3" />
             {t("badge")}
           </div>
-        </div>
 
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-3">
-          {t("titleStart")}
-          <span className="bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">
-            {t("titleHighlight")}
-          </span>
-        </h2>
-        <p className="text-sm text-zinc-500 text-center mb-10 max-w-sm mx-auto">
-          {t("subtitle")}
-        </p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+            {t("titleStart")}
+            <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              {t("titleHighlight")}
+            </span>
+          </h2>
+          <p className="text-sm sm:text-base text-zinc-500 max-w-xl mx-auto leading-relaxed">
+            {t("subtitle")}
+          </p>
+        </motion.div>
 
-        <div className="space-y-2">
-          {FEATURED_MODELS.filter(m => m.badge).map(m => {
-            const badgeColor = PROVIDER_BADGE_COLOR[m.provider] ?? "zinc";
-            return (
-            <Link key={m.id} href="/login" className="flex items-center gap-4 p-4 sm:p-5 rounded-xl border border-white/[0.07] bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/[0.15] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-violet-500/10 transition-all duration-300 group cursor-pointer">
-              <div className="w-9 h-9 rounded-lg bg-white/[0.06] border border-white/[0.08] flex items-center justify-center text-zinc-400 shrink-0 group-hover:border-white/[0.15] transition-colors">
-                {PROVIDER_ICON[m.provider] ?? <Cpu className="w-4 h-4" />}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                  <span className="text-sm font-semibold text-zinc-100">{m.name}</span>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium uppercase tracking-wider ${BADGE_COLORS[badgeColor]}`}>{m.provider.toUpperCase()}</span>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/20 font-medium uppercase tracking-wider">{m.badge}</span>
-                </div>
-                <p className="text-xs text-zinc-500 truncate">{m.description}</p>
-              </div>
-              <ArrowRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-300 group-hover:translate-x-0.5 transition-all shrink-0" />
-            </Link>
-            );
-          })}
+        {/* Bento grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-3"
+        >
+          {/* Hero card (featured/badged model) */}
+          {featured.map((m) => (
+            <HeroModelCard key={m.id} model={m} />
+          ))}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {FEATURED_MODELS.filter(m => !m.badge).map(m => {
-              const badgeColor = PROVIDER_BADGE_COLOR[m.provider] ?? "zinc";
-              return (
-              <Link key={m.id} href="/login" className="flex items-center gap-3 p-4 rounded-xl border border-white/[0.07] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/[0.13] hover:-translate-y-0.5 hover:shadow-md hover:shadow-white/5 transition-all duration-300 group cursor-pointer">
-                <div className="w-8 h-8 rounded-lg bg-white/[0.06] border border-white/[0.08] flex items-center justify-center text-zinc-400 shrink-0 group-hover:border-white/[0.14] transition-colors">
-                  {PROVIDER_ICON[m.provider] ?? <Cpu className="w-4 h-4" />}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
-                    <span className="text-sm font-semibold text-zinc-100 truncate">{m.name}</span>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium uppercase tracking-wider shrink-0 ${BADGE_COLORS[badgeColor]}`}>{m.provider.toUpperCase()}</span>
-                  </div>
-                  <p className="text-xs text-zinc-500 truncate">{m.description}</p>
-                </div>
-                <ArrowRight className="w-3.5 h-3.5 text-zinc-600 group-hover:text-zinc-300 group-hover:translate-x-0.5 transition-all shrink-0" />
-              </Link>
-              );
-            })}
-          </div>
+          {/* Remaining models */}
+          {others.map((m) => (
+            <ModelCard key={m.id} model={m} />
+          ))}
+        </motion.div>
 
-          <Link href="/models" className="flex items-center justify-center gap-2 p-3.5 rounded-xl border border-dashed border-white/[0.07] text-xs text-zinc-600 hover:text-zinc-300 hover:border-white/[0.15] hover:bg-white/[0.02] transition-all duration-300 cursor-pointer group">
+        {/* View all link */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="mt-4"
+        >
+          <Link
+            href="/models"
+            className="group flex items-center justify-center gap-2.5 py-4 rounded-2xl border border-dashed border-white/[0.08] text-sm text-zinc-600 hover:text-zinc-200 hover:border-white/[0.18] hover:bg-white/[0.02] transition-all duration-300"
+          >
             {t("viewAll")}
-            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-        </div>
+        </motion.div>
       </div>
-      </FadeIn>
     </section>
   );
 }

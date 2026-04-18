@@ -63,11 +63,11 @@ export default async function LandingPage() {
       <ProviderTicker />
 
       <style>{`
-        @keyframes ticker {
+        @keyframes marquee-left {
           0%   { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
-        @keyframes ticker-reverse {
+        @keyframes marquee-right {
           0%   { transform: translateX(-50%); }
           100% { transform: translateX(0); }
         }
