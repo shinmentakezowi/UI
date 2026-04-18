@@ -83,7 +83,7 @@ function HeroModelCard({ model }: { model: (typeof FEATURED_MODELS)[0] }) {
   const Icon = theme?.Icon;
 
   return (
-    <motion.div variants={itemVariants} className="col-span-1 md:col-span-2 lg:col-span-3">
+    <motion.div variants={itemVariants}>
       <Link href="/login" className="group relative block cursor-pointer">
         <div className="relative rounded-[20px] overflow-hidden border border-white/[0.06] bg-[#08080c] transition-all duration-500 group-hover:border-white/[0.12]">
           {/* Mesh gradient background */}
@@ -332,9 +332,13 @@ export function FeaturedModels() {
   const others = FEATURED_MODELS.filter((m) => !m.badge);
 
   return (
-    <section id="models" className="py-24 sm:py-32 px-4 scroll-mt-20 relative overflow-hidden">
+    <section id="models" className="pt-14 sm:pt-20 pb-24 sm:pb-32 px-4 scroll-mt-20 relative overflow-hidden">
       {/* Background elements */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-violet-500/[0.02] rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-violet-500/[0.03] rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-cyan-500/[0.02] rounded-full blur-[120px] pointer-events-none" />
+
+      {/* Connecting line from ticker above */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-14 bg-gradient-to-b from-violet-500/15 to-transparent" />
 
       <div className="max-w-5xl mx-auto relative">
         {/* Section header */}
@@ -342,17 +346,17 @@ export function FeaturedModels() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-14"
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/20 bg-violet-500/[0.06] text-xs text-violet-400 font-medium mb-6"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/20 bg-violet-500/[0.06] text-xs text-violet-400 font-medium mb-5"
             whileHover={{ scale: 1.03 }}
           >
             <Sparkles className="w-3.5 h-3.5" />
             {t("badge")}
           </motion.div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-5 tracking-tight leading-[1.1]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight leading-[1.1]">
             {t("titleStart")}
             <br className="hidden sm:block" />
             <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -364,40 +368,37 @@ export function FeaturedModels() {
           </p>
         </motion.div>
 
-        {/* Model grid - asymmetric bento */}
+        {/* Model grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"
+          className="space-y-3"
         >
-          {/* Hero card spans full width */}
+          {/* Hero card - full width */}
           {featured.map((m) => (
             <HeroModelCard key={m.id} model={m} />
           ))}
 
-          {/* Regular cards in 2-col on md, 4-col on lg */}
-          {others.map((m, i) => (
-            <ModelCard key={m.id} model={m} index={i} />
-          ))}
+          {/* Regular cards - 2x2 grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {others.map((m, i) => (
+              <ModelCard key={m.id} model={m} index={i} />
+            ))}
+          </div>
 
-          {/* View all card as part of the grid */}
+          {/* View all */}
           <motion.div variants={itemVariants}>
             <Link
               href="/models"
-              className="group relative flex flex-col items-center justify-center h-full min-h-[220px] rounded-[20px] border border-dashed border-white/[0.06] bg-[#08080c] hover:border-white/[0.15] hover:bg-white/[0.02] transition-all duration-500 cursor-pointer"
+              className="group relative flex items-center justify-center gap-3 py-4 rounded-[20px] border border-dashed border-white/[0.06] bg-[#08080c]/50 hover:border-violet-500/20 hover:bg-violet-500/[0.02] transition-all duration-500 cursor-pointer"
             >
-              <div className="w-12 h-12 rounded-xl border border-white/[0.06] bg-white/[0.02] flex items-center justify-center mb-4 group-hover:border-violet-500/30 group-hover:bg-violet-500/[0.06] transition-all duration-300">
-                <CircleDot className="w-5 h-5 text-zinc-600 group-hover:text-violet-400 transition-colors" />
-              </div>
-              <span className="text-sm font-medium text-zinc-600 group-hover:text-zinc-200 transition-colors mb-1">
+              <CircleDot className="w-4 h-4 text-zinc-600 group-hover:text-violet-400 transition-colors" />
+              <span className="text-sm font-medium text-zinc-600 group-hover:text-zinc-200 transition-colors">
                 {t("viewAll")}
               </span>
-              <span className="text-[10px] text-zinc-700 group-hover:text-zinc-500 transition-colors">
-                Browse the full catalog
-              </span>
-              <ArrowRight className="w-4 h-4 text-zinc-700 group-hover:text-violet-400 mt-3 group-hover:translate-x-1 transition-all" />
+              <ArrowRight className="w-4 h-4 text-zinc-700 group-hover:text-violet-400 group-hover:translate-x-1 transition-all" />
             </Link>
           </motion.div>
         </motion.div>
