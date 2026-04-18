@@ -1,6 +1,4 @@
 import { Navbar } from "@/components/Navbar";
-import { FadeIn } from "@/components/FadeIn";
-import { AnimatedStats } from "@/components/AnimatedStats";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { FeaturedModels } from "@/components/landing/FeaturedModels";
 import { WhyUs } from "@/components/landing/WhyUs";
@@ -16,16 +14,10 @@ import { HUDOverlay } from "@/components/landing/HUDOverlay";
 import { HeroScrollIndicator } from "@/components/landing/HeroScrollIndicator";
 import { HeroSubtitle } from "@/components/landing/HeroSubtitle";
 import { HeroTrustBar } from "@/components/landing/HeroTrustBar";
-import { fetchModelsData, PROVIDER_ORDER, PROVIDER_DISPLAY } from "@/lib/models";
+import { ProviderTicker } from "@/components/landing/ProviderTicker";
 import { getTranslations } from "next-intl/server";
 
 export default async function LandingPage() {
-  const { models } = await fetchModelsData();
-  const providerSet = new Set(models.map(m => m.provider));
-  const providers = PROVIDER_ORDER
-    .filter(p => providerSet.has(p) && p in PROVIDER_DISPLAY)
-    .map(p => PROVIDER_DISPLAY[p]);
-
   const t = await getTranslations("home");
   const tc = await getTranslations("common");
 
@@ -67,35 +59,17 @@ export default async function LandingPage() {
         <HeroScrollIndicator />
       </section>
 
-      {/* Stats */}
-      <section id="stats" className="py-20 sm:py-28 px-4 relative">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[1px] bg-gradient-to-r from-transparent via-violet-500/20 to-transparent" />
-        <FadeIn>
-          <AnimatedStats />
-        </FadeIn>
-      </section>
-
       {/* Provider ticker */}
-      <div className="relative border-y border-white/[0.05] overflow-hidden py-4 select-none">
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10" />
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10" />
-        <div className="flex" style={{ animation: "ticker 35s linear infinite" }}>
-          {[0, 1].map(i => (
-            <div key={i} aria-hidden={i === 1} className="flex shrink-0">
-              {providers.map(name => (
-                <span key={name} className="px-10 text-[13px] text-zinc-500 font-medium whitespace-nowrap tracking-wide">
-                  {name}
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
+      <ProviderTicker />
 
       <style>{`
         @keyframes ticker {
           0%   { transform: translateX(0); }
           100% { transform: translateX(-50%); }
+        }
+        @keyframes ticker-reverse {
+          0%   { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
         }
       `}</style>
 

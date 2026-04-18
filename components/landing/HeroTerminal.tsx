@@ -7,13 +7,6 @@ import {
 import {
   Terminal as TerminalIcon,
 } from "lucide-react";
-import {
-  OpenAIIcon,
-  AnthropicIcon,
-  GoogleIcon,
-  XAIIcon,
-  MoonshotIcon,
-} from "@/components/icons/providers";
 
 const PythonIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 48 48" fill="currentColor" {...props}>
@@ -210,57 +203,6 @@ export function HeroTerminal() {
           </div>
         </div>
 
-      </motion.div>
-
-      {/* Floating provider logos */}
-      <motion.div
-        animate={{ y: [-8, 8, -8], rotate: [0, 5, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-5 -right-5 z-30 hidden md:block"
-      >
-        <div className="bg-black/80 p-2.5 rounded-lg border border-white/10 shadow-2xl backdrop-blur-md">
-          <OpenAIIcon size={22} />
-        </div>
-      </motion.div>
-
-      <motion.div
-        animate={{ y: [6, -10, 6], rotate: [0, -6, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        className="absolute -top-3 right-16 z-30 hidden md:block"
-      >
-        <div className="bg-black/80 p-2.5 rounded-lg border border-white/10 shadow-2xl backdrop-blur-md">
-          <AnthropicIcon size={22} />
-        </div>
-      </motion.div>
-
-      <motion.div
-        animate={{ y: [10, -6, 10], rotate: [0, -8, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute bottom-12 -left-5 z-30 hidden md:block"
-      >
-        <div className="bg-black/80 p-2.5 rounded-lg border border-white/10 shadow-2xl backdrop-blur-md">
-          <GoogleIcon size={22} />
-        </div>
-      </motion.div>
-
-      <motion.div
-        animate={{ y: [-6, 10, -6], rotate: [0, 4, 0] }}
-        transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-        className="absolute bottom-28 -right-5 z-30 hidden md:block"
-      >
-        <div className="bg-black/80 p-2.5 rounded-lg border border-white/10 shadow-2xl backdrop-blur-md">
-          <XAIIcon size={22} />
-        </div>
-      </motion.div>
-
-      <motion.div
-        animate={{ y: [8, -8, 8], rotate: [0, -5, 0] }}
-        transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="absolute bottom-0 left-12 z-30 hidden md:block"
-      >
-        <div className="bg-black/80 p-2.5 rounded-lg border border-white/10 shadow-2xl backdrop-blur-md">
-          <MoonshotIcon size={22} />
-        </div>
       </motion.div>
     </div>
   );
