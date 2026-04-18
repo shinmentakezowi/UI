@@ -52,25 +52,23 @@ export function ModelCard({ model, index, onClick, copied }: ModelCardProps) {
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ delay: Math.min(0.03 * index, 0.6), duration: 0.3 }}
-      whileHover={{ y: -4 }}
+      exit={{ opacity: 0 }}
+      transition={{ delay: Math.min(0.02 * index, 0.4), duration: 0.25 }}
       className="relative group cursor-pointer"
       onClick={onClick}
     >
-      {/* Hover glow */}
+      {/* Hover glow — GPU-accelerated opacity only */}
       <div
-        className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"
+        className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl pointer-events-none"
         style={{
           background: `radial-gradient(circle at 50% 50%, ${model.accent}15, transparent 70%)`,
         }}
       />
 
-      {/* Card */}
-      <div className="relative h-full rounded-2xl bg-[#0A0A0A] border border-white/[0.06] group-hover:border-white/[0.12] transition-all duration-300 overflow-hidden">
+      {/* Card — use CSS transform for hover, not Framer layout */}
+      <div className="relative h-full rounded-2xl bg-[#0A0A0A] border border-white/[0.06] group-hover:border-white/[0.12] transition-all duration-300 overflow-hidden group-hover:-translate-y-1">
         {/* Top accent line */}
         <div
           className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"

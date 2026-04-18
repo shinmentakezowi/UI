@@ -1,21 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
-import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 
 export function ModelsBackground() {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const spotRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleMouseMove({ clientX, clientY }: { clientX: number; clientY: number }) {
-      mouseX.set(clientX);
-      mouseY.set(clientY);
+      spotRef.current?.style.setProperty("--mx", `${clientX}px`);
+      spotRef.current?.style.setProperty("--my", `${clientY}px`);
     }
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY]);
+  }, []);
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-[#050505]">
@@ -32,17 +31,13 @@ export function ModelsBackground() {
       {/* Top gradient wash */}
       <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-violet-500/[0.04] via-transparent to-transparent" />
 
-      {/* Mouse-following spotlight */}
-      <motion.div
+      {/* Mouse-following spotlight — CSS-only, no React re-renders */}
+      <div
+        ref={spotRef}
         className="absolute inset-0 opacity-30"
         style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              600px circle at ${mouseX}px ${mouseY}px,
-              rgba(139, 92, 246, 0.06),
-              transparent 70%
-            )
-          `,
+          background:
+            "radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(139, 92, 246, 0.06), transparent 70%)",
         }}
       />
 

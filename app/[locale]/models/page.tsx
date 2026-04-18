@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Search,
   Sparkles,
@@ -484,11 +484,8 @@ export default function ModelsPage() {
           </AnimatePresence>
 
           {/* Models Grid */}
-          <motion.div
-            layout
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"
-          >
-            <AnimatePresence mode="popLayout">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+            <AnimatePresence mode="wait">
               {filteredModels.map((model, i) => (
                 <ModelCard
                   key={model.id}
@@ -499,7 +496,7 @@ export default function ModelsPage() {
                 />
               ))}
             </AnimatePresence>
-          </motion.div>
+          </div>
 
           {/* No Results */}
           {filteredModels.length === 0 && (
