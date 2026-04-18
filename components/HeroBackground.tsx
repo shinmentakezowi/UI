@@ -22,7 +22,7 @@ const floatingLogos = [
   { Icon: AnthropicIcon, size: 48, top: "12%", right: "8%", delay: 1.2, glow: "#D19B75" },
   { Icon: GoogleIcon, size: 40, top: "52%", left: "3%", delay: 2.5, glow: "#4285F4" },
   { Icon: XAIIcon, size: 36, bottom: "18%", right: "7%", delay: 0.8, glow: "#E0E0E0" },
-  { Icon: MoonshotIcon, size: 42, top: "32%", left: "16%", delay: 3, glow: "#A78BFA" },
+  { Icon: MoonshotIcon, size: 42, top: "32%", left: "16%", delay: 3, glow: "#1783FF" },
   { Icon: DeepSeekIcon, size: 46, bottom: "10%", left: "32%", delay: 1.8, glow: "#4D6BFE" },
   { Icon: MistralIcon, size: 38, top: "22%", right: "22%", delay: 0.5, glow: "#FF7000" },
   { Icon: MetaIcon, size: 34, top: "68%", left: "12%", delay: 2.2, glow: "#0081FB" },

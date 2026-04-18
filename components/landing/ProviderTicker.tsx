@@ -36,7 +36,7 @@ const ALL_PROVIDERS: ProviderEntry[] = [
   { key: "META", name: "Meta Llama", Icon: MetaIcon, color: "#0081FB" },
   { key: "ALIBABA", name: "Qwen", Icon: QwenIcon, color: "#615CED" },
   { key: "ZHIPU", name: "Zhipu AI", Icon: ZhipuIcon, color: "#1679FF" },
-  { key: "MOONSHOT", name: "Moonshot", Icon: MoonshotIcon, color: "#A78BFA" },
+  { key: "MOONSHOT", name: "Kimi", Icon: MoonshotIcon, color: "#1783FF" },
   { key: "COHERE", name: "Cohere", Icon: CohereIcon, color: "#14B8A6" },
   { key: "PERPLEXITY", name: "Perplexity", Icon: PerplexityIcon, color: "#22D3EE" },
 ];
