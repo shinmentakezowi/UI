@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 import {
   Check,
   X,
@@ -300,6 +301,8 @@ function PricingCards() {
 // ─── Main Page ─────────────────────────────────────────────────
 
 export default function PricingPage() {
+  const tFooter = useTranslations("footer");
+
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden relative selection:bg-violet-500/30 selection:text-white">
       <PricingBackground />
@@ -558,34 +561,89 @@ export default function PricingPage() {
       </section>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-white/[0.05] pt-12 pb-0 overflow-hidden">
-        <div className="max-w-3xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 text-xs text-zinc-600">
-          <div className="flex items-center gap-2">
-            <img src="/favicon.svg" alt="" width={18} height={18} className="rounded" />
-            <span className="font-medium text-zinc-500">Hapuppy</span>
+      <footer className="relative border-t border-white/[0.05] pt-14 pb-0 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-950/[0.03] to-transparent pointer-events-none" />
+
+        <div className="relative z-10 max-w-5xl mx-auto px-4">
+          <div className="relative mb-10 rounded-3xl border border-white/[0.08] bg-gradient-to-br from-white/[0.03] via-violet-500/[0.03] to-transparent backdrop-blur-sm overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent" />
+
+            <div className="grid gap-8 px-6 py-8 sm:px-8 lg:grid-cols-[1.2fr_0.8fr_0.8fr_1fr]">
+              <div>
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-violet-500/20 bg-gradient-to-br from-violet-500/12 to-fuchsia-500/10 shadow-[0_0_30px_rgba(139,92,246,0.08)]">
+                    <img src="/favicon.svg" alt="" width={18} height={18} className="rounded" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold tracking-tight text-white">Hapuppy</p>
+                    <div className="mt-1 flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(74,222,128,0.8)]" />
+                      <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-emerald-300/70">
+                        {tFooter("pricingStatus")}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <p className="max-w-sm text-sm leading-relaxed text-zinc-400">
+                  {tFooter("pricingSummary")}
+                </p>
+              </div>
+
+              <div>
+                <p className="mb-4 text-[10px] font-mono font-bold uppercase tracking-[0.28em] text-zinc-500">
+                  {tFooter("pricingProduct")}
+                </p>
+                <div className="space-y-3 text-sm text-zinc-400">
+                  <Link href="/" className="block transition-colors hover:text-white">{tFooter("pricingHome")}</Link>
+                  <Link href="/models" className="block transition-colors hover:text-white">{tFooter("pricingModels")}</Link>
+                  <Link href="/login" className="block transition-colors hover:text-white">{tFooter("signIn")}</Link>
+                </div>
+              </div>
+
+              <div>
+                <p className="mb-4 text-[10px] font-mono font-bold uppercase tracking-[0.28em] text-zinc-500">
+                  {tFooter("pricingCompany")}
+                </p>
+                <div className="space-y-3 text-sm text-zinc-400">
+                  <Link href="/privacy" className="block transition-colors hover:text-white">{tFooter("privacy")}</Link>
+                  <Link href="/terms" className="block transition-colors hover:text-white">{tFooter("terms")}</Link>
+                  <Link href="/register" className="block transition-colors hover:text-white">{tFooter("register")}</Link>
+                </div>
+              </div>
+
+              <div>
+                <p className="mb-4 text-[10px] font-mono font-bold uppercase tracking-[0.28em] text-zinc-500">
+                  {tFooter("pricingSupport")}
+                </p>
+                <div className="space-y-3 text-sm text-zinc-400">
+                  <a href="mailto:support@hapuppy.com" className="block transition-colors hover:text-white">{tFooter("email")}</a>
+                  <a href="https://discord.gg/YWayJmZKCu" target="_blank" rel="noopener noreferrer" className="block transition-colors hover:text-white">{tFooter("discord")}</a>
+                  <p className="text-xs leading-relaxed text-zinc-500">
+                    {tFooter("pricingSupportHint")}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3 border-t border-white/[0.06] px-6 py-4 text-xs text-zinc-500 sm:px-8 md:flex-row md:flex-wrap md:items-center md:justify-between">
+              <span>&copy; {new Date().getFullYear()} Hapuppy. {tFooter("copyright")}</span>
+              <span className="font-mono uppercase tracking-[0.22em] text-zinc-600">
+                {tFooter("pricingBottomLine")}
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-5">
-            <Link href="/" className="hover:text-zinc-400 transition-colors">Home</Link>
-            <Link href="/login" className="hover:text-zinc-400 transition-colors">Sign In</Link>
-            <Link href="/register" className="hover:text-zinc-400 transition-colors">Register</Link>
-          </div>
-          <div className="flex items-center gap-5">
-            <Link href="/privacy" className="hover:text-zinc-400 transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-zinc-400 transition-colors">Terms</Link>
-            <a href="mailto:support@hapuppy.com" className="hover:text-zinc-400 transition-colors">Email</a>
-            <a href="https://discord.gg/YWayJmZKCu" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-400 transition-colors">Discord</a>
-          </div>
-          <span>&copy; {new Date().getFullYear()} Hapuppy</span>
+
+          <p className="max-w-3xl mx-auto text-center text-[10px] text-zinc-700 mb-8 leading-relaxed">
+            {tFooter("disclaimer")}
+          </p>
         </div>
-        <p className="max-w-2xl mx-auto px-4 text-center text-[10px] text-zinc-700 mb-8 leading-relaxed">
-          Hapuppy is an independent product and is not affiliated with Anthropic, OpenAI, Google, xAI, Meta, Mistral, DeepSeek, or any other AI provider.
-        </p>
+
         <div className="relative text-center select-none overflow-hidden h-28 sm:h-40">
           <div
-            className="absolute inset-x-0 bottom-0 text-[80px] sm:text-[120px] md:text-[160px] font-black leading-none tracking-tighter text-transparent pointer-events-none"
+            className="absolute inset-x-0 bottom-[8%] text-[80px] sm:text-[120px] md:text-[160px] font-black leading-none tracking-tighter text-transparent pointer-events-none"
             style={{
               WebkitTextStroke: "1px rgba(255,255,255,0.04)",
-              background: "linear-gradient(to bottom, rgba(124,58,237,0.15), transparent)",
+              background: "linear-gradient(to bottom, rgba(124,58,237,0.18), transparent)",
               WebkitBackgroundClip: "text",
             }}
           >
