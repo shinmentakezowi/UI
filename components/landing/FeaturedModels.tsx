@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/routing";
-import { ArrowRight, Crown } from "lucide-react";
+import { ArrowRight, Crown, Sparkles, CircleDot } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { FEATURED_MODELS } from "@/lib/featured-models";
@@ -19,40 +19,45 @@ type IconProps = SVGProps<SVGSVGElement> & { size?: number };
 interface ProviderTheme {
   Icon: (props: IconProps) => React.ReactElement;
   color: string;
-  gradient: string;
-  bg: string;
+  accent: string;
+  meshGradient: string;
 }
 
 const PROVIDER_THEMES: Record<string, ProviderTheme> = {
   Anthropic: {
     Icon: AnthropicIcon,
     color: "#D19B75",
-    gradient: "from-amber-500/20 via-orange-500/10 to-transparent",
-    bg: "rgba(209,155,117,0.08)",
+    accent: "#D19B75",
+    meshGradient:
+      "radial-gradient(ellipse at 20% 0%, rgba(209,155,117,0.12) 0%, transparent 50%), radial-gradient(ellipse at 80% 100%, rgba(209,155,117,0.06) 0%, transparent 50%)",
   },
   OpenAI: {
     Icon: OpenAIIcon,
     color: "#10a37f",
-    gradient: "from-emerald-500/20 via-green-500/10 to-transparent",
-    bg: "rgba(16,163,127,0.08)",
+    accent: "#10a37f",
+    meshGradient:
+      "radial-gradient(ellipse at 20% 0%, rgba(16,163,127,0.12) 0%, transparent 50%), radial-gradient(ellipse at 80% 100%, rgba(16,163,127,0.06) 0%, transparent 50%)",
   },
   Google: {
     Icon: GoogleIcon,
     color: "#4285F4",
-    gradient: "from-blue-500/20 via-blue-400/10 to-transparent",
-    bg: "rgba(66,133,244,0.08)",
+    accent: "#4285F4",
+    meshGradient:
+      "radial-gradient(ellipse at 20% 0%, rgba(66,133,244,0.12) 0%, transparent 50%), radial-gradient(ellipse at 80% 100%, rgba(66,133,244,0.06) 0%, transparent 50%)",
   },
   Zhipu: {
     Icon: ZhipuIcon,
     color: "#1679FF",
-    gradient: "from-blue-600/20 via-indigo-500/10 to-transparent",
-    bg: "rgba(22,121,255,0.08)",
+    accent: "#1679FF",
+    meshGradient:
+      "radial-gradient(ellipse at 20% 0%, rgba(22,121,255,0.12) 0%, transparent 50%), radial-gradient(ellipse at 80% 100%, rgba(22,121,255,0.06) 0%, transparent 50%)",
   },
   xAI: {
     Icon: XAIIcon,
-    color: "#E0E0E0",
-    gradient: "from-zinc-400/20 via-zinc-500/10 to-transparent",
-    bg: "rgba(224,224,224,0.06)",
+    color: "#a0a0a0",
+    accent: "#a0a0a0",
+    meshGradient:
+      "radial-gradient(ellipse at 20% 0%, rgba(160,160,160,0.10) 0%, transparent 50%), radial-gradient(ellipse at 80% 100%, rgba(160,160,160,0.05) 0%, transparent 50%)",
   },
 };
 
@@ -60,17 +65,16 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.08 },
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 24, scale: 0.96 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { type: "spring" as const, stiffness: 120, damping: 20 },
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -79,71 +83,134 @@ function HeroModelCard({ model }: { model: (typeof FEATURED_MODELS)[0] }) {
   const Icon = theme?.Icon;
 
   return (
-    <motion.div variants={itemVariants} className="col-span-1 md:col-span-2">
-      <Link
-        href="/login"
-        className="group relative block rounded-2xl overflow-hidden cursor-pointer"
-      >
-        {/* Animated border glow */}
-        <div
-          className="absolute -inset-[1px] rounded-2xl opacity-40 group-hover:opacity-70 transition-opacity duration-500 blur-[1px]"
-          style={{
-            background: `linear-gradient(135deg, ${theme?.color}60, transparent 60%)`,
-          }}
-        />
-
-        {/* Card body */}
-        <div className="relative rounded-2xl bg-[#0a0a0f]/95 backdrop-blur-xl border border-white/[0.06] p-6 sm:p-8 transition-all duration-300 group-hover:border-white/[0.12]">
-          {/* Background radial glow */}
+    <motion.div variants={itemVariants} className="col-span-1 md:col-span-2 lg:col-span-3">
+      <Link href="/login" className="group relative block cursor-pointer">
+        <div className="relative rounded-[20px] overflow-hidden border border-white/[0.06] bg-[#08080c] transition-all duration-500 group-hover:border-white/[0.12]">
+          {/* Mesh gradient background */}
           <div
-            className={`absolute inset-0 bg-gradient-to-br ${theme?.gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}
+            className="absolute inset-0 opacity-80 group-hover:opacity-100 transition-opacity duration-700"
+            style={{ background: theme?.meshGradient }}
           />
 
-          <div className="relative flex flex-col sm:flex-row sm:items-start gap-5">
-            {/* Provider logo */}
+          {/* Animated top accent bar */}
+          <div className="absolute top-0 left-0 right-0 h-[2px] overflow-hidden">
             <motion.div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border border-white/[0.08]"
-              style={{ background: theme?.bg }}
-              whileHover={{ rotate: [0, -5, 5, 0] }}
-              transition={{ duration: 0.4 }}
-            >
-              {Icon && (
-                <div style={{ filter: `drop-shadow(0 0 8px ${theme?.color}50)` }}>
-                  <Icon size={28} />
-                </div>
-              )}
-            </motion.div>
-
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2.5 mb-2 flex-wrap">
-                <span className="text-lg sm:text-xl font-bold text-white">
-                  {model.name}
-                </span>
-                <span
-                  className="text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider border"
-                  style={{
-                    color: theme?.color,
-                    borderColor: `${theme?.color}30`,
-                    background: `${theme?.color}12`,
-                  }}
-                >
-                  {model.provider}
-                </span>
-                {model.badge && (
-                  <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center gap-1">
-                    <Crown className="w-2.5 h-2.5" />
-                    {model.badge}
-                  </span>
-                )}
-              </div>
-              <p className="text-sm text-zinc-400 leading-relaxed max-w-lg">
-                {model.description}
-              </p>
-            </div>
-
-            <ArrowRight
-              className="w-5 h-5 text-zinc-600 group-hover:text-white group-hover:translate-x-1 transition-all duration-300 shrink-0 self-center hidden sm:block"
+              className="h-full w-full"
+              style={{
+                background: `linear-gradient(90deg, transparent, ${theme?.accent}, transparent)`,
+              }}
+              animate={{ x: ["-100%", "100%"] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             />
+          </div>
+
+          {/* Grid pattern overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `linear-gradient(${theme?.color}20 1px, transparent 1px), linear-gradient(90deg, ${theme?.color}20 1px, transparent 1px)`,
+              backgroundSize: "40px 40px",
+            }}
+          />
+
+          <div className="relative p-7 sm:p-9">
+            <div className="flex flex-col sm:flex-row sm:items-start gap-6">
+              {/* Left: Logo container with orbital ring */}
+              <div className="relative w-16 h-16 shrink-0">
+                {/* Orbital ring */}
+                <motion.div
+                  className="absolute inset-[-6px] rounded-full border border-dashed"
+                  style={{ borderColor: `${theme?.color}20` }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                />
+                {/* Orbital dot */}
+                <motion.div
+                  className="absolute w-2 h-2 rounded-full"
+                  style={{
+                    background: theme?.color,
+                    boxShadow: `0 0 8px ${theme?.color}`,
+                    transformOrigin: `4px ${16 + 4 + 6}px`,
+                    top: -6,
+                    left: "calc(50% - 4px)",
+                    width: 8,
+                    height: 8,
+                  }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                />
+
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center border border-white/[0.08] relative z-10"
+                  style={{ background: `${theme?.color}10` }}
+                >
+                  {Icon && (
+                    <div style={{ filter: `drop-shadow(0 0 10px ${theme?.color}60)` }}>
+                      <Icon size={32} />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Right: Content */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-3 mb-3 flex-wrap">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                    {model.name}
+                  </h3>
+                  <span
+                    className="text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-widest border"
+                    style={{
+                      color: theme?.color,
+                      borderColor: `${theme?.color}30`,
+                      background: `${theme?.color}10`,
+                    }}
+                  >
+                    {model.provider}
+                  </span>
+                  {model.badge && (
+                    <span className="text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-widest bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/25 flex items-center gap-1.5">
+                      <Crown className="w-3 h-3" />
+                      {model.badge}
+                    </span>
+                  )}
+                </div>
+
+                <p className="text-sm text-zinc-400 leading-relaxed mb-5 max-w-2xl">
+                  {model.description}
+                </p>
+
+                {/* Capabilities + Context */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  {model.capabilities.map((cap) => (
+                    <span
+                      key={cap}
+                      className="text-[10px] px-2 py-0.5 rounded font-medium tracking-wide border border-white/[0.06] bg-white/[0.03] text-zinc-400"
+                    >
+                      {cap}
+                    </span>
+                  ))}
+                  <span className="text-[10px] px-2 py-0.5 rounded font-mono font-bold tracking-wide text-emerald-400/80 bg-emerald-500/8 border border-emerald-500/15">
+                    {model.context} ctx
+                  </span>
+                  {/* Live indicator */}
+                  <span className="flex items-center gap-1.5 text-[10px] text-emerald-400/70 ml-1">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                    </span>
+                    Live
+                  </span>
+                </div>
+              </div>
+
+              {/* Arrow */}
+              <div className="hidden sm:flex items-center self-center">
+                <div className="w-10 h-10 rounded-xl border border-white/[0.06] bg-white/[0.02] flex items-center justify-center group-hover:bg-white/[0.06] group-hover:border-white/[0.12] transition-all duration-300">
+                  <ArrowRight className="w-4 h-4 text-zinc-500 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Link>
@@ -151,71 +218,106 @@ function HeroModelCard({ model }: { model: (typeof FEATURED_MODELS)[0] }) {
   );
 }
 
-function ModelCard({ model }: { model: (typeof FEATURED_MODELS)[0] }) {
+function ModelCard({
+  model,
+  index,
+}: {
+  model: (typeof FEATURED_MODELS)[0];
+  index: number;
+}) {
   const theme = PROVIDER_THEMES[model.provider];
   const Icon = theme?.Icon;
 
   return (
     <motion.div variants={itemVariants}>
-      <Link
-        href="/login"
-        className="group relative block rounded-2xl overflow-hidden cursor-pointer h-full"
-      >
-        {/* Border glow */}
-        <div
-          className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-500 blur-[1px]"
-          style={{
-            background: `linear-gradient(135deg, ${theme?.color}50, transparent 60%)`,
-          }}
-        />
-
-        {/* Card body */}
-        <div className="relative h-full rounded-2xl bg-[#0a0a0f]/90 backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 transition-all duration-300 group-hover:border-white/[0.12] group-hover:-translate-y-1">
-          {/* Subtle bg glow */}
+      <Link href="/login" className="group relative block cursor-pointer h-full">
+        <div className="relative h-full rounded-[20px] overflow-hidden border border-white/[0.06] bg-[#08080c] transition-all duration-500 group-hover:border-white/[0.12] group-hover:-translate-y-1">
+          {/* Mesh gradient */}
           <div
-            className={`absolute inset-0 bg-gradient-to-br ${theme?.gradient} opacity-0 group-hover:opacity-80 transition-opacity duration-500 rounded-2xl`}
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+            style={{ background: theme?.meshGradient }}
           />
 
-          <div className="relative flex flex-col h-full">
-            {/* Top: Logo + Provider */}
-            <div className="flex items-center justify-between mb-4">
-              <motion.div
-                className="w-11 h-11 rounded-xl flex items-center justify-center border border-white/[0.08]"
-                style={{ background: theme?.bg }}
-                whileHover={{ scale: 1.1 }}
-              >
-                {Icon && (
-                  <div style={{ filter: `drop-shadow(0 0 6px ${theme?.color}40)` }}>
-                    <Icon size={22} />
-                  </div>
-                )}
-              </motion.div>
+          {/* Left accent strip */}
+          <div
+            className="absolute top-0 left-0 w-[2px] h-0 group-hover:h-full transition-all duration-700 ease-out"
+            style={{ background: `linear-gradient(180deg, ${theme?.accent}, transparent)` }}
+          />
+
+          <div className="relative p-6 flex flex-col h-full">
+            {/* Header: Logo + Live dot */}
+            <div className="flex items-start justify-between mb-5">
+              <div className="relative">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center border border-white/[0.06] group-hover:border-white/[0.12] transition-colors duration-300"
+                  style={{ background: `${theme?.color}08` }}
+                >
+                  {Icon && (
+                    <div
+                      className="opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{ filter: `drop-shadow(0 0 6px ${theme?.color}40)` }}
+                    >
+                      <Icon size={24} />
+                    </div>
+                  )}
+                </div>
+                {/* Number badge */}
+                <div className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-md bg-[#111] border border-white/[0.08] flex items-center justify-center">
+                  <span className="text-[9px] font-mono font-bold text-zinc-500">
+                    0{index + 2}
+                  </span>
+                </div>
+              </div>
+
               <span
-                className="text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider border"
+                className="text-[10px] px-2 py-0.5 rounded-md font-bold uppercase tracking-widest border mt-1"
                 style={{
                   color: theme?.color,
                   borderColor: `${theme?.color}25`,
-                  background: `${theme?.color}10`,
+                  background: `${theme?.color}08`,
                 }}
               >
                 {model.provider}
               </span>
             </div>
 
-            {/* Model name */}
-            <h3 className="text-base font-bold text-white mb-1.5">
+            {/* Name */}
+            <h3 className="text-lg font-bold text-white mb-2 tracking-tight group-hover:text-white/90">
               {model.name}
             </h3>
 
             {/* Description */}
-            <p className="text-xs text-zinc-500 leading-relaxed flex-1">
+            <p className="text-xs text-zinc-500 leading-relaxed flex-1 mb-4">
               {model.description}
             </p>
 
-            {/* Bottom arrow */}
-            <div className="flex items-center gap-1.5 mt-4 text-xs text-zinc-600 group-hover:text-zinc-300 transition-colors duration-300">
-              <span className="font-medium">Try now</span>
-              <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+            {/* Capability chips */}
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              {model.capabilities.map((cap) => (
+                <span
+                  key={cap}
+                  className="text-[9px] px-1.5 py-0.5 rounded font-medium tracking-wide border border-white/[0.05] bg-white/[0.02] text-zinc-500 group-hover:text-zinc-400 group-hover:border-white/[0.08] transition-colors"
+                >
+                  {cap}
+                </span>
+              ))}
+            </div>
+
+            {/* Footer: Context + Arrow */}
+            <div className="flex items-center justify-between pt-3 border-t border-white/[0.04]">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono font-bold text-zinc-500">
+                  {model.context} ctx
+                </span>
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 text-[11px] text-zinc-600 group-hover:text-zinc-300 transition-colors">
+                <span className="font-medium">Explore</span>
+                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+              </div>
             </div>
           </div>
         </div>
@@ -230,9 +332,9 @@ export function FeaturedModels() {
   const others = FEATURED_MODELS.filter((m) => !m.badge);
 
   return (
-    <section id="models" className="py-24 sm:py-32 px-4 scroll-mt-20 relative">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-500/[0.03] rounded-full blur-[120px] pointer-events-none" />
+    <section id="models" className="py-24 sm:py-32 px-4 scroll-mt-20 relative overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-violet-500/[0.02] rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-5xl mx-auto relative">
         {/* Section header */}
@@ -240,58 +342,64 @@ export function FeaturedModels() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-violet-500/20 bg-violet-500/[0.06] text-xs text-violet-400 font-medium mb-6">
-            <Crown className="w-3 h-3" />
+          <motion.div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/20 bg-violet-500/[0.06] text-xs text-violet-400 font-medium mb-6"
+            whileHover={{ scale: 1.03 }}
+          >
+            <Sparkles className="w-3.5 h-3.5" />
             {t("badge")}
-          </div>
+          </motion.div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-5 tracking-tight leading-[1.1]">
             {t("titleStart")}
+            <br className="hidden sm:block" />
             <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
               {t("titleHighlight")}
             </span>
           </h2>
-          <p className="text-sm sm:text-base text-zinc-500 max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-zinc-500 max-w-lg mx-auto leading-relaxed">
             {t("subtitle")}
           </p>
         </motion.div>
 
-        {/* Bento grid */}
+        {/* Model grid - asymmetric bento */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-3"
+          viewport={{ once: true, margin: "-60px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"
         >
-          {/* Hero card (featured/badged model) */}
+          {/* Hero card spans full width */}
           {featured.map((m) => (
             <HeroModelCard key={m.id} model={m} />
           ))}
 
-          {/* Remaining models */}
-          {others.map((m) => (
-            <ModelCard key={m.id} model={m} />
+          {/* Regular cards in 2-col on md, 4-col on lg */}
+          {others.map((m, i) => (
+            <ModelCard key={m.id} model={m} index={i} />
           ))}
-        </motion.div>
 
-        {/* View all link */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className="mt-4"
-        >
-          <Link
-            href="/models"
-            className="group flex items-center justify-center gap-2.5 py-4 rounded-2xl border border-dashed border-white/[0.08] text-sm text-zinc-600 hover:text-zinc-200 hover:border-white/[0.18] hover:bg-white/[0.02] transition-all duration-300"
-          >
-            {t("viewAll")}
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
+          {/* View all card as part of the grid */}
+          <motion.div variants={itemVariants}>
+            <Link
+              href="/models"
+              className="group relative flex flex-col items-center justify-center h-full min-h-[220px] rounded-[20px] border border-dashed border-white/[0.06] bg-[#08080c] hover:border-white/[0.15] hover:bg-white/[0.02] transition-all duration-500 cursor-pointer"
+            >
+              <div className="w-12 h-12 rounded-xl border border-white/[0.06] bg-white/[0.02] flex items-center justify-center mb-4 group-hover:border-violet-500/30 group-hover:bg-violet-500/[0.06] transition-all duration-300">
+                <CircleDot className="w-5 h-5 text-zinc-600 group-hover:text-violet-400 transition-colors" />
+              </div>
+              <span className="text-sm font-medium text-zinc-600 group-hover:text-zinc-200 transition-colors mb-1">
+                {t("viewAll")}
+              </span>
+              <span className="text-[10px] text-zinc-700 group-hover:text-zinc-500 transition-colors">
+                Browse the full catalog
+              </span>
+              <ArrowRight className="w-4 h-4 text-zinc-700 group-hover:text-violet-400 mt-3 group-hover:translate-x-1 transition-all" />
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
     </section>
