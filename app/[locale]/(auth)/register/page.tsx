@@ -22,6 +22,12 @@ import {
   Globe,
   Sparkles,
 } from "lucide-react";
+import {
+  AnthropicIcon,
+  OpenAIIcon,
+  MoonshotIcon,
+  GoogleIcon as GeminiIcon,
+} from "@/components/icons/providers";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
@@ -176,135 +182,194 @@ function RegisterPageContent() {
   }
 
   return (
-    <div className="min-h-screen flex bg-[#030303] selection:bg-violet-500/30 selection:text-white">
-      {/* Left Panel - Brand Experience */}
-      <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden bg-[#000000]">
-        {/* Animated gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-600/15 via-transparent to-blue-600/10" />
-        <div className="absolute inset-0 bg-gradient-to-tl from-fuchsia-600/8 via-transparent to-transparent" />
+    <div className="min-h-screen flex bg-[#050505] selection:bg-violet-500/30 selection:text-white">
+      {/* Left Panel - Hero-style Brand Experience */}
+      <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden bg-[#020202]">
+        {/* Hero radial gradient */}
+        <div className="absolute inset-0 bg-hero-radial" />
 
-        {/* Grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_40%,#000_60%,transparent_100%)]" />
+        {/* Grid pattern matching hero */}
+        <div className="absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_80%_60%_at_50%_40%,#000_60%,transparent_100%)]" />
 
         {/* Floating orbs */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-violet-600/10 blur-[100px] animate-orb-drift" />
-        <div className="absolute bottom-1/3 right-1/4 w-48 h-48 rounded-full bg-blue-600/10 blur-[80px] animate-orb-drift-slow" />
-        <div className="absolute top-2/3 left-1/3 w-32 h-32 rounded-full bg-fuchsia-600/8 blur-[60px] animate-orb-drift-reverse" />
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 rounded-full bg-violet-600/10 blur-[120px] animate-orb-drift" />
+        <div className="absolute bottom-1/3 right-1/4 w-56 h-56 rounded-full bg-blue-600/8 blur-[100px] animate-orb-drift-slow" />
+        <div className="absolute top-2/3 left-1/3 w-40 h-40 rounded-full bg-fuchsia-600/6 blur-[80px] animate-orb-drift-reverse" />
 
-        {/* Corner accents */}
-        <div className="absolute top-8 left-8 w-24 h-24 border-t-2 border-l-2 border-white/[0.06] rounded-tl-3xl" />
-        <div className="absolute bottom-8 right-8 w-24 h-24 border-b-2 border-r-2 border-white/[0.06] rounded-br-3xl" />
-        <div className="absolute top-8 right-8 w-3 h-3 rounded-full bg-violet-500/40" />
-        <div className="absolute bottom-8 left-8 w-3 h-3 rounded-full bg-blue-500/40" />
+        {/* HUD corners */}
+        <div className="absolute top-6 left-6 w-16 h-16 border-l-2 border-t-2 border-white/[0.06] rounded-tl-2xl" />
+        <div className="absolute top-6 right-6 w-16 h-16 border-r-2 border-t-2 border-white/[0.06] rounded-tr-2xl" />
+        <div className="absolute bottom-6 left-6 w-16 h-16 border-l-2 border-b-2 border-white/[0.06] rounded-bl-2xl" />
+        <div className="absolute bottom-6 right-6 w-16 h-16 border-r-2 border-b-2 border-white/[0.06] rounded-br-2xl" />
 
-        <div className="relative z-10 flex flex-col justify-between p-12 xl:p-16 w-full h-full">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <img src="/favicon.svg" alt="" width={24} height={24} className="rounded" />
-            <span className="text-xl font-bold tracking-tighter text-white">Hapuppy</span>
-          </Link>
+        {/* Vertical data lines */}
+        <div className="absolute top-1/3 left-5 w-[1px] h-20 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+        <div className="absolute bottom-1/4 right-5 w-[1px] h-20 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
+        <div className="relative z-10 flex flex-col justify-between p-10 xl:p-14 w-full h-full">
+          {/* Logo + status */}
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2.5">
+              <img src="/favicon.svg" alt="" width={22} height={22} className="rounded" />
+              <span className="text-lg font-bold tracking-tighter text-white">Hapuppy</span>
+            </Link>
+            <div className="flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_#22c55e] animate-pulse" />
+              <span className="text-[10px] font-mono text-emerald-500/60">ONLINE</span>
+            </div>
+          </div>
 
           {/* Center content */}
           <div className="max-w-lg">
+            {/* Headline */}
+            <div className="space-y-2 mb-4">
+              <h2 className="text-3xl xl:text-4xl font-bold tracking-tighter leading-[1.1] text-white">
+                <motion.span
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="inline-block"
+                >
+                  Start building with
+                </motion.span>
+                <br />
+                <motion.span
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                  className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 animate-gradient-shift"
+                >
+                  every AI model.
+                </motion.span>
+              </h2>
+            </div>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+              className="text-sm text-zinc-500 max-w-md font-light leading-relaxed mb-8"
+            >
+              One unified API. <span className="text-zinc-300 font-medium">Transparent pay-per-token pricing.</span>{" "}
+              No lock-in, no surprises.
+            </motion.p>
+
+            {/* Stats row */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ delay: 0.9, duration: 0.5 }}
+              className="flex items-center gap-6 mb-8"
             >
-              <h2 className="text-[28px] xl:text-[32px] font-bold text-white mb-3 tracking-tight leading-[1.2]">
-                Start building with{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">
-                  every AI model
-                </span>
-                {" "}in minutes.
-              </h2>
-              <p className="text-gray-500 text-sm mb-8 leading-relaxed max-w-md">
-                Join thousands of developers using transparent, pay-per-token pricing with one unified API.
-              </p>
+              {[
+                { value: "105+", label: "AI Models" },
+                { value: "99.9%", label: "Uptime" },
+                { value: "<50ms", label: "Latency" },
+              ].map((stat) => (
+                <div key={stat.label} className="flex flex-col">
+                  <span className="text-xl font-bold text-white tracking-tight">{stat.value}</span>
+                  <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-wider">{stat.label}</span>
+                </div>
+              ))}
             </motion.div>
 
-            {/* Feature grid */}
+            {/* Feature list */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="grid grid-cols-2 gap-3"
+              transition={{ duration: 0.6, delay: 1.0 }}
+              className="grid grid-cols-2 gap-2.5"
             >
               {features.map((feat, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.1] transition-all group"
+                  className="flex items-center gap-2.5 p-3 rounded-lg bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.1] transition-all group"
                 >
-                  <div className="w-8 h-8 rounded-lg bg-violet-500/10 border border-violet-500/15 flex items-center justify-center flex-shrink-0 group-hover:bg-violet-500/15 transition-colors">
+                  <div className="w-7 h-7 rounded-md bg-violet-500/10 border border-violet-500/15 flex items-center justify-center flex-shrink-0 group-hover:bg-violet-500/15 transition-colors">
                     <feat.icon className="w-3.5 h-3.5 text-violet-400" />
                   </div>
                   <div>
-                    <p className="text-white text-xs font-semibold mb-0.5">{feat.title}</p>
-                    <p className="text-gray-600 text-[10px] font-mono">{feat.desc}</p>
+                    <p className="text-white text-[11px] font-semibold leading-tight">{feat.title}</p>
+                    <p className="text-gray-600 text-[9px] font-mono">{feat.desc}</p>
                   </div>
                 </div>
               ))}
             </motion.div>
 
-            {/* Social proof */}
+            {/* Powered by */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="flex items-center gap-4 mt-8 p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06] w-fit"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              className="mt-6 pt-5 border-t border-white/5 flex items-center gap-5"
             >
-              <div className="flex -space-x-2">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="w-7 h-7 rounded-full border-2 border-black bg-gradient-to-br from-violet-700 to-blue-900" />
+              <span className="uppercase tracking-widest text-[10px] font-mono text-zinc-600 flex-shrink-0">POWERED BY</span>
+              <div className="flex items-center gap-4">
+                {[
+                  { Icon: OpenAIIcon, label: "OpenAI" },
+                  { Icon: AnthropicIcon, label: "Claude" },
+                  { Icon: MoonshotIcon, label: "Kimi" },
+                  { Icon: GeminiIcon, label: "Gemini" },
+                ].map(({ Icon, label }) => (
+                  <div key={label} className="flex items-center gap-1.5 opacity-50 hover:opacity-80 transition-opacity">
+                    <Icon size={16} />
+                    <span className="text-[10px] font-mono text-zinc-500 hidden xl:inline">{label}</span>
+                  </div>
                 ))}
               </div>
-              <p className="text-gray-500 text-[10px] font-mono"><span className="text-white font-bold">10,000+</span> DEVELOPERS BUILDING</p>
             </motion.div>
           </div>
 
           {/* Footer */}
-          <div className="flex justify-between items-end text-[10px] font-mono text-gray-700">
-            <span>EST. 2026</span>
-            <span>ENTERPRISE-GRADE INFRASTRUCTURE</span>
+          <div className="flex justify-between items-end text-[10px] font-mono text-white/15">
+            <span>API.GATEWAY // ACTIVE</span>
+            <span>99.9% UPTIME</span>
           </div>
         </div>
       </div>
 
       {/* Right Panel - Register Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 relative overflow-y-auto">
-        {/* Background accents */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(139,92,246,0.06),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_80%,rgba(59,130,246,0.04),transparent_50%)]" />
+      <div className="flex-1 flex items-center justify-center p-4 lg:p-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(139,92,246,0.05),transparent_60%)]" />
 
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-[420px] relative z-10 my-auto">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-[400px] relative z-10">
           {/* Mobile logo */}
-          <div className="lg:hidden mb-8 flex items-center">
+          <div className="lg:hidden mb-6 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5">
               <img src="/favicon.svg" alt="" width={22} height={22} className="rounded" />
               <span className="text-lg font-bold text-white">Hapuppy</span>
             </Link>
+            <div className="flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[10px] font-mono text-emerald-500/60">ONLINE</span>
+            </div>
           </div>
 
-          {/* Main card */}
-          <div className="mb-6 p-7 rounded-2xl bg-[#0A0A0A]/80 border border-white/[0.08] backdrop-blur-xl shadow-[0_0_60px_rgba(0,0,0,0.5)]">
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-white mb-1.5 tracking-tight">{t("registerTitle")}</h1>
-              <p className="text-gray-500 text-sm">{t("registerSubtitle")}</p>
+          {/* Register card */}
+          <div className="p-5 rounded-2xl bg-[#0A0A0A]/80 border border-white/[0.08] backdrop-blur-xl shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+            {/* Header */}
+            <div className="mb-4">
+              <div className="flex items-center gap-2.5 mb-1.5">
+                <div className="w-1 h-4 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
+                <h1 className="text-lg font-bold text-white tracking-tight">{t("registerTitle")}</h1>
+              </div>
+              <p className="text-zinc-600 text-[11px] pl-[18px]">{t("registerSubtitle")}</p>
             </div>
 
             {/* Social login buttons */}
-            <div className="grid grid-cols-2 gap-3 mb-5">
+            <div className="grid grid-cols-2 gap-2 mb-4">
               <button
                 onClick={handleGithubLogin}
                 disabled={githubLoading}
-                className="flex items-center justify-center gap-2 h-11 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] hover:border-white/[0.15] transition-all text-xs font-medium text-gray-300 cursor-pointer disabled:opacity-50 group"
+                className="flex items-center justify-center gap-2 h-9 rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] hover:border-white/[0.15] transition-all text-xs font-medium text-gray-300 cursor-pointer disabled:opacity-50 group"
               >
                 <GithubIcon />
                 <span className="group-hover:text-white transition-colors">{githubLoading ? tc("redirecting") : "GitHub"}</span>
               </button>
               <button
                 disabled
-                className="flex items-center justify-center gap-2 h-11 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs font-medium text-gray-500 cursor-not-allowed opacity-50"
+                className="flex items-center justify-center gap-2 h-9 rounded-lg bg-white/[0.04] border border-white/[0.08] text-xs font-medium text-gray-500 cursor-not-allowed opacity-50"
               >
                 <GoogleIcon />
                 <span>Google</span>
@@ -312,75 +377,75 @@ function RegisterPageContent() {
             </div>
 
             {/* Divider */}
-            <div className="relative mb-5">
+            <div className="relative mb-4">
               <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/[0.06]" /></div>
-              <div className="relative flex justify-center text-xs uppercase tracking-widest font-mono">
-                <span className="px-4 bg-[#0A0A0A] text-gray-600">{tc("or")}</span>
+              <div className="relative flex justify-center text-[10px] uppercase tracking-[0.2em] font-mono">
+                <span className="px-4 bg-[#0A0A0A] text-gray-700">{tc("or")}</span>
               </div>
             </div>
 
             {/* Form */}
-            <form onSubmit={handleRegister} className="space-y-3.5">
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-mono font-medium text-gray-500 uppercase tracking-wider">{tc("username")}</label>
+            <form onSubmit={handleRegister} className="space-y-2.5">
+              <div className="space-y-1">
+                <label className="text-[10px] font-mono font-medium text-gray-600 uppercase tracking-[0.15em]">{tc("username")}</label>
                 <div className="relative group">
-                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 group-focus-within:text-violet-400 transition-colors" />
-                  <input ref={nameRef} type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder={t("usernamePlaceholder")} required maxLength={20} autoComplete="name" className="w-full h-11 pl-10 pr-4 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder:text-gray-700 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] focus:shadow-[0_0_20px_rgba(139,92,246,0.08)] transition-all text-sm" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-700 group-focus-within:text-violet-400 transition-colors" />
+                  <input ref={nameRef} type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder={t("usernamePlaceholder")} required maxLength={20} autoComplete="name" className="w-full h-9 pl-9 pr-4 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder:text-gray-700 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.06),0_0_20px_rgba(139,92,246,0.04)] transition-all text-sm" />
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-mono font-medium text-gray-500 uppercase tracking-wider">{tc("email")}</label>
+              <div className="space-y-1">
+                <label className="text-[10px] font-mono font-medium text-gray-600 uppercase tracking-[0.15em]">{tc("email")}</label>
                 <div className="relative group">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 group-focus-within:text-violet-400 transition-colors" />
-                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("emailPlaceholder")} required autoComplete="email" className="w-full h-11 pl-10 pr-4 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder:text-gray-700 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] focus:shadow-[0_0_20px_rgba(139,92,246,0.08)] transition-all text-sm" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-700 group-focus-within:text-violet-400 transition-colors" />
+                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("emailPlaceholder")} required autoComplete="email" className="w-full h-9 pl-9 pr-4 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder:text-gray-700 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.06),0_0_20px_rgba(139,92,246,0.04)] transition-all text-sm" />
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-mono font-medium text-gray-500 uppercase tracking-wider">{tc("password")}</label>
+              <div className="space-y-1">
+                <label className="text-[10px] font-mono font-medium text-gray-600 uppercase tracking-[0.15em]">{tc("password")}</label>
                 <div className="relative group">
-                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 group-focus-within:text-violet-400 transition-colors" />
-                  <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder={t("createPassword")} required minLength={8} autoComplete="new-password" className="w-full h-11 pl-10 pr-11 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder:text-gray-700 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] focus:shadow-[0_0_20px_rgba(139,92,246,0.08)] transition-all text-sm" />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400 transition-colors">
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-700 group-focus-within:text-violet-400 transition-colors" />
+                  <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder={t("createPassword")} required minLength={8} autoComplete="new-password" className="w-full h-9 pl-9 pr-10 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder:text-gray-700 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.06),0_0_20px_rgba(139,92,246,0.04)] transition-all text-sm" />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700 hover:text-gray-400 transition-colors">
+                    {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   </button>
                 </div>
                 <PasswordStrength password={password} />
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-mono font-medium text-gray-500 uppercase tracking-wider">{t("confirmPassword")}</label>
+              <div className="space-y-1">
+                <label className="text-[10px] font-mono font-medium text-gray-600 uppercase tracking-[0.15em]">{t("confirmPassword")}</label>
                 <div className="relative group">
-                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 group-focus-within:text-violet-400 transition-colors" />
-                  <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder={t("confirmPasswordPlaceholder")} required minLength={8} autoComplete="new-password" className="w-full h-11 pl-10 pr-4 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder:text-gray-700 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] focus:shadow-[0_0_20px_rgba(139,92,246,0.08)] transition-all text-sm" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-700 group-focus-within:text-violet-400 transition-colors" />
+                  <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder={t("confirmPasswordPlaceholder")} required minLength={8} autoComplete="new-password" className="w-full h-9 pl-9 pr-4 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder:text-gray-700 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.06),0_0_20px_rgba(139,92,246,0.04)] transition-all text-sm" />
                 </div>
-                {confirmPassword && password !== confirmPassword && <p className="text-[10px] text-red-400 mt-1">{t("passwordMismatch")}</p>}
+                {confirmPassword && password !== confirmPassword && <p className="text-[10px] text-red-400 mt-0.5">{t("passwordMismatch")}</p>}
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-mono font-medium text-gray-500 uppercase tracking-wider">{t("inviteCode")}</label>
-                <input type="text" value={inviteCode} onChange={(e) => setInviteCode(e.target.value)} placeholder={t("inviteCodePlaceholder")} className="w-full h-11 px-4 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder:text-gray-700 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] focus:shadow-[0_0_20px_rgba(139,92,246,0.08)] transition-all text-sm" />
+              <div className="space-y-1">
+                <label className="text-[10px] font-mono font-medium text-gray-600 uppercase tracking-[0.15em]">{t("inviteCode")}</label>
+                <input type="text" value={inviteCode} onChange={(e) => setInviteCode(e.target.value)} placeholder={t("inviteCodePlaceholder")} className="w-full h-9 px-4 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder:text-gray-700 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.06),0_0_20px_rgba(139,92,246,0.04)] transition-all text-sm" />
               </div>
 
-              <label className="flex items-start gap-2.5 cursor-pointer pt-1">
-                <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 w-4 h-4 rounded border-white/20 bg-white/[0.03] text-violet-500 focus:ring-0 focus:ring-offset-0 cursor-pointer accent-violet-500" />
-                <span className="text-xs text-gray-500 leading-relaxed">{t("agreeToTerms")} <Link href="/terms" target="_blank" className="text-violet-400 hover:text-violet-300 transition-colors">{t("termsOfService")}</Link> {t("and")} <Link href="/privacy" target="_blank" className="text-violet-400 hover:text-violet-300 transition-colors">{t("privacyPolicy")}</Link></span>
+              <label className="flex items-start gap-2 cursor-pointer pt-0.5">
+                <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 w-3.5 h-3.5 rounded border-white/20 bg-white/[0.03] text-violet-500 focus:ring-0 focus:ring-offset-0 cursor-pointer accent-violet-500" />
+                <span className="text-[11px] text-gray-500 leading-relaxed">{t("agreeToTerms")} <Link href="/terms" target="_blank" className="text-violet-400 hover:text-violet-300 transition-colors">{t("termsOfService")}</Link> {t("and")} <Link href="/privacy" target="_blank" className="text-violet-400 hover:text-violet-300 transition-colors">{t("privacyPolicy")}</Link></span>
               </label>
 
               {error && error !== "EMAIL_EXISTS" && (
-                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="flex items-center gap-2.5 p-3 rounded-xl bg-red-500/[0.08] border border-red-500/15 text-red-400 text-sm font-mono">
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />{error}
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="flex items-center gap-2 p-2.5 rounded-lg bg-red-500/[0.08] border border-red-500/15 text-red-400 text-xs font-mono">
+                  <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />{error}
                 </motion.div>
               )}
               {error === "EMAIL_EXISTS" && (
-                <p className="text-xs text-red-400 bg-red-500/[0.06] border border-red-500/15 rounded-xl px-3 py-2.5">{t("emailRegistered")} <Link href="/login" className="underline text-red-300 hover:text-red-200">{t("signInInstead")}</Link></p>
+                <p className="text-xs text-red-400 bg-red-500/[0.06] border border-red-500/15 rounded-lg px-3 py-2">{t("emailRegistered")} <Link href="/login" className="underline text-red-300 hover:text-red-200">{t("signInInstead")}</Link></p>
               )}
 
               <button
                 type="submit"
                 disabled={loading || !agreed || (confirmPassword !== "" && password !== confirmPassword)}
-                className="w-full h-11 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold rounded-xl hover:from-violet-500 hover:to-fuchsia-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(139,92,246,0.25),0_0_40px_rgba(139,92,246,0.1)] hover:shadow-[0_4px_30px_rgba(139,92,246,0.35),0_0_60px_rgba(139,92,246,0.15)] text-sm cursor-pointer active:scale-[0.98]"
+                className="w-full h-9 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold rounded-lg hover:from-violet-500 hover:to-fuchsia-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(139,92,246,0.25),0_0_40px_rgba(139,92,246,0.1)] hover:shadow-[0_4px_30px_rgba(139,92,246,0.35),0_0_60px_rgba(139,92,246,0.15)] text-sm cursor-pointer active:scale-[0.98]"
               >
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : t("createAccount")}
               </button>
@@ -388,22 +453,15 @@ function RegisterPageContent() {
           </div>
 
           {/* Sign in link */}
-          <p className="text-center text-sm text-gray-500">{t("hasAccount")} <Link href="/login" className="text-violet-400 hover:text-violet-300 transition-colors font-semibold">{tc("signIn")}</Link></p>
+          <p className="text-center text-xs text-gray-500 mt-4">{t("hasAccount")} <Link href="/login" className="text-violet-400 hover:text-violet-300 transition-colors font-semibold">{tc("signIn")}</Link></p>
 
-          {/* Footer badges */}
-          <div className="mt-8 pt-5 border-t border-white/[0.04] flex items-center justify-center gap-4">
-            <div className="flex items-center gap-1.5 text-[10px] text-gray-700 font-mono">
-              <Shield className="w-3 h-3" />
-              <span>256-BIT</span>
-            </div>
-            <div className="w-px h-3 bg-white/[0.06]" />
-            <div className="flex items-center gap-1.5 text-[10px] text-gray-700 font-mono">
-              <Lock className="w-3 h-3" />
+          {/* Footer security bar */}
+          <div className="mt-5 pt-3 border-t border-white/[0.03]">
+            <div className="flex items-center justify-center gap-6 text-[9px] font-mono text-white/15 uppercase tracking-widest">
+              <span>256-BIT SSL</span>
+              <span className="text-violet-500/30">&bull;</span>
               <span>SOC 2</span>
-            </div>
-            <div className="w-px h-3 bg-white/[0.06]" />
-            <div className="flex items-center gap-1.5 text-[10px] text-gray-700 font-mono">
-              <Globe className="w-3 h-3" />
+              <span className="text-violet-500/30">&bull;</span>
               <span>GDPR</span>
             </div>
           </div>

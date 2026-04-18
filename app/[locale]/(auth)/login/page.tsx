@@ -12,9 +12,14 @@ import {
   Eye,
   EyeOff,
   AlertCircle,
-  Terminal,
   ArrowRight,
 } from "lucide-react";
+import {
+  AnthropicIcon,
+  OpenAIIcon,
+  MoonshotIcon,
+  GoogleIcon as GeminiIcon,
+} from "@/components/icons/providers";
 
 function GithubIcon() {
   return (
@@ -24,96 +29,12 @@ function GithubIcon() {
   );
 }
 
-function TerminalTyper() {
-  const lines = [
-    { prompt: "~", cmd: "curl https://beta.hapuppy.com/v1/models", delay: 0 },
-    { prompt: "", cmd: '{"models": ["gpt-4o", "claude-sonnet", "gemini-pro", ...105 more]}', delay: 1.2, isOutput: true },
-    { prompt: "~", cmd: "export OPENAI_BASE_URL=https://beta.hapuppy.com/v1", delay: 2.5 },
-    { prompt: "~", cmd: "echo $OPENAI_BASE_URL", delay: 3.8 },
-    { prompt: "", cmd: "https://beta.hapuppy.com/v1", delay: 4.5, isOutput: true },
-    { prompt: "~", cmd: "python app.py --model claude-sonnet-4-20250514", delay: 5.5 },
-    { prompt: "", cmd: "Connected to Hapuppy Gateway  //  latency: 38ms", delay: 6.8, isOutput: true },
-    { prompt: "", cmd: "Streaming response from anthropic/claude-sonnet ...", delay: 7.5, isOutput: true },
-  ];
-
-  const [visibleLines, setVisibleLines] = useState(0);
-
-  useEffect(() => {
-    const timers = lines.map((line, i) =>
-      setTimeout(() => setVisibleLines(i + 1), line.delay * 1000)
-    );
-    const resetTimer = setTimeout(() => setVisibleLines(0), 10000);
-    const restartTimer = setTimeout(() => {
-      setVisibleLines(0);
-      const newTimers = lines.map((line, i) =>
-        setTimeout(() => setVisibleLines(i + 1), line.delay * 1000)
-      );
-      return () => newTimers.forEach(clearTimeout);
-    }, 10500);
-    return () => {
-      timers.forEach(clearTimeout);
-      clearTimeout(resetTimer);
-      clearTimeout(restartTimer);
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <div className="font-mono text-[11px] leading-[1.8] text-gray-500">
-      {lines.slice(0, visibleLines).map((line, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, x: -4 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.2 }}
-          className={line.isOutput ? "text-gray-600 pl-0" : ""}
-        >
-          {line.prompt && (
-            <span className="text-violet-500">{line.prompt}</span>
-          )}
-          {line.prompt && <span className="text-gray-700"> $ </span>}
-          <span className={line.isOutput ? "text-emerald-500/70" : "text-gray-400"}>
-            {line.cmd}
-          </span>
-        </motion.div>
-      ))}
-      {visibleLines < lines.length && (
-        <motion.span
-          animate={{ opacity: [0, 1, 0] }}
-          transition={{ repeat: Infinity, duration: 0.8 }}
-          className="inline-block w-1.5 h-3.5 bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.6)]"
-        />
-      )}
-    </div>
-  );
-}
-
-function FloatingModelBadges() {
-  const models = [
-    { name: "GPT-4o", color: "from-green-500/20 to-emerald-500/20 border-green-500/20" },
-    { name: "Claude Sonnet", color: "from-orange-500/20 to-amber-500/20 border-orange-500/20" },
-    { name: "Gemini Pro", color: "from-blue-500/20 to-cyan-500/20 border-blue-500/20" },
-    { name: "Llama 3.1", color: "from-purple-500/20 to-violet-500/20 border-purple-500/20" },
-    { name: "Mistral", color: "from-pink-500/20 to-rose-500/20 border-pink-500/20" },
-    { name: "DeepSeek", color: "from-teal-500/20 to-cyan-500/20 border-teal-500/20" },
-  ];
-
-  return (
-    <div className="flex flex-wrap gap-2">
-      {models.map((model, i) => (
-        <motion.div
-          key={model.name}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.8 + i * 0.1, duration: 0.3 }}
-          className={`px-2.5 py-1 rounded-md bg-gradient-to-r ${model.color} border text-[10px] font-mono text-white/70`}
-        >
-          {model.name}
-        </motion.div>
-      ))}
-    </div>
-  );
-}
+const providerLogos = [
+  { Icon: OpenAIIcon, label: "OpenAI" },
+  { Icon: AnthropicIcon, label: "Claude" },
+  { Icon: MoonshotIcon, label: "Kimi" },
+  { Icon: GeminiIcon, label: "Gemini" },
+];
 
 export default function LoginPage() {
   const t = useTranslations("auth");
@@ -156,22 +77,13 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex bg-[#050505] selection:bg-violet-500/30 selection:text-white overflow-hidden">
-      {/* Left Panel - Live Terminal + Ambient Art */}
+      {/* Left Panel - Hero-style Brand */}
       <div className="hidden lg:flex lg:w-[52%] relative bg-[#020202]">
-        {/* Layered backgrounds */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:40px_40px]" />
-        <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_70%_50%_at_50%_50%,#000_40%,transparent_100%)]">
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-900/20 via-transparent to-fuchsia-900/15" />
-        </div>
+        {/* Hero radial gradient */}
+        <div className="absolute inset-0 bg-hero-radial" />
 
-        {/* Animated neon scanline */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div
-            animate={{ y: ["-100%", "200%"] }}
-            transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
-            className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/30 to-transparent"
-          />
-        </div>
+        {/* Grid pattern */}
+        <div className="absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_80%_60%_at_50%_50%,#000_40%,transparent_100%)]" />
 
         {/* Floating orbs */}
         <div className="absolute top-1/4 right-1/4 w-72 h-72 rounded-full bg-violet-600/8 blur-[120px] animate-orb-drift" />
@@ -194,67 +106,66 @@ export default function LoginPage() {
               <img src="/favicon.svg" alt="" width={22} height={22} className="rounded" />
               <span className="text-lg font-bold tracking-tighter text-white">Hapuppy</span>
             </Link>
-            <div className="flex items-center gap-2 text-[10px] font-mono text-white/20">
-              <span>SYS.V.2.04</span>
-              <span className="text-white/10">//</span>
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_#22c55e] animate-pulse" />
-                <span className="text-emerald-500/60">ONLINE</span>
-              </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_#22c55e] animate-pulse" />
+              <span className="text-[10px] font-mono text-emerald-500/60">ONLINE</span>
             </div>
           </div>
 
-          {/* Center - Terminal window */}
+          {/* Center content - Hero-style headline */}
           <div className="max-w-lg">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="rounded-xl border border-white/[0.08] bg-[#0A0A0A]/80 backdrop-blur-sm overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)]"
-            >
-              {/* Terminal chrome */}
-              <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06] bg-black/40">
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
-                </div>
-                <div className="flex items-center gap-1.5 text-[10px] font-mono text-white/25">
-                  <Terminal className="w-3 h-3" />
-                  <span>hapuppy-gateway</span>
-                </div>
-              </div>
-              {/* Terminal body */}
-              <div className="p-5 min-h-[200px]">
-                <TerminalTyper />
-              </div>
-              {/* Status bar */}
-              <div className="px-4 py-1.5 border-t border-white/[0.04] bg-black/30 flex items-center justify-between text-[9px] font-mono text-white/20">
-                <span>bash -- 80x24</span>
-                <div className="flex items-center gap-3">
-                  <span>UTF-8</span>
-                  <span>105 models</span>
-                  <span>p99: 42ms</span>
-                </div>
-              </div>
-            </motion.div>
+            <div className="space-y-2 mb-6">
+              <h2 className="text-4xl xl:text-5xl font-bold tracking-tighter leading-[0.9] text-white">
+                <motion.span
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="inline-block"
+                >
+                  Welcome back,
+                </motion.span>
+                <br />
+                <span className="glitch-wrapper inline-block">
+                  <span className="glitch relative inline-block text-white text-4xl xl:text-5xl font-black" data-text="developer.">
+                    developer.
+                  </span>
+                </span>
+              </h2>
+            </div>
 
-            {/* Model badges */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="text-lg text-zinc-400 max-w-md font-light leading-relaxed mb-10"
+            >
+              Access <span className="text-white font-medium">105+ AI models</span> through
+              a single, unified API with transparent pricing.
+            </motion.p>
+
+            {/* Powered by */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="mt-6"
+              transition={{ delay: 1.0 }}
+              className="pt-6 border-t border-white/5 flex items-center gap-5"
             >
-              <p className="text-[10px] font-mono text-white/20 uppercase tracking-widest mb-3">Available Models</p>
-              <FloatingModelBadges />
+              <span className="uppercase tracking-widest text-[10px] font-mono text-zinc-600 flex-shrink-0">POWERED BY</span>
+              <div className="flex items-center gap-4">
+                {providerLogos.map(({ Icon, label }) => (
+                  <div key={label} className="flex items-center gap-1.5 opacity-50 hover:opacity-80 transition-opacity">
+                    <Icon size={16} />
+                    <span className="text-[10px] font-mono text-zinc-500 hidden xl:inline">{label}</span>
+                  </div>
+                ))}
+              </div>
             </motion.div>
           </div>
 
           {/* Bottom bar */}
           <div className="flex justify-between items-end text-[10px] font-mono text-white/15">
             <span>API.GATEWAY // ACTIVE</span>
-            <span>99.9% UPTIME &bull; 2.4B+ REQUESTS</span>
+            <span>99.9% UPTIME</span>
           </div>
         </div>
       </div>
@@ -281,110 +192,113 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-1 h-5 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
-              <h1 className="text-2xl font-bold text-white tracking-tight">{t("loginTitle")}</h1>
-            </div>
-            <p className="text-gray-600 text-sm pl-3">{t("loginSubtitle")}</p>
-          </div>
-
-          {/* GitHub login */}
-          <button
-            onClick={handleGithubLogin}
-            disabled={githubLoading}
-            className="w-full flex items-center justify-center gap-2.5 h-11 rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] hover:border-violet-500/30 transition-all text-sm font-medium text-gray-300 cursor-pointer disabled:opacity-50 group mb-6 hover:shadow-[0_0_20px_rgba(139,92,246,0.06)]"
-          >
-            <GithubIcon />
-            <span className="group-hover:text-white transition-colors">
-              {githubLoading ? tc("redirecting") : t("continueGithub")}
-            </span>
-          </button>
-
-          {/* Divider */}
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/[0.06]" />
-            </div>
-            <div className="relative flex justify-center text-[10px] uppercase tracking-[0.2em] font-mono">
-              <span className="px-4 bg-[#050505] text-gray-700">{tc("or")}</span>
-            </div>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-mono font-medium text-gray-600 uppercase tracking-[0.15em]">{tc("email")}</label>
-              <div className="relative group">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-700 group-focus-within:text-violet-400 transition-colors duration-300" />
-                <input
-                  ref={emailRef}
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t("emailPlaceholder")}
-                  required
-                  autoComplete="email"
-                  className="w-full h-11 pl-10 pr-4 bg-white/[0.02] border border-white/[0.06] rounded-lg text-white placeholder:text-gray-800 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.04] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.08),0_0_20px_rgba(139,92,246,0.06)] transition-all duration-300 text-sm"
-                />
+          {/* Login card */}
+          <div className="p-6 rounded-2xl bg-[#0A0A0A]/80 border border-white/[0.08] backdrop-blur-xl shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+            {/* Header */}
+            <div className="mb-6">
+              <div className="flex items-center gap-2.5 mb-2">
+                <div className="w-1 h-5 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
+                <h1 className="text-xl font-bold text-white tracking-tight">{t("loginTitle")}</h1>
               </div>
+              <p className="text-zinc-600 text-xs pl-[18px]">{t("loginSubtitle")}</p>
             </div>
 
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <label className="text-[10px] font-mono font-medium text-gray-600 uppercase tracking-[0.15em]">{tc("password")}</label>
-                <Link href="/forgot-password" className="text-[10px] text-violet-500/70 hover:text-violet-400 transition-colors font-mono tracking-wider">{t("forgotPassword")}</Link>
-              </div>
-              <div className="relative group">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-700 group-focus-within:text-violet-400 transition-colors duration-300" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
-                  required
-                  autoComplete="current-password"
-                  className="w-full h-11 pl-10 pr-11 bg-white/[0.02] border border-white/[0.06] rounded-lg text-white placeholder:text-gray-800 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.04] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.08),0_0_20px_rgba(139,92,246,0.06)] transition-all duration-300 text-sm"
-                />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700 hover:text-gray-500 transition-colors">
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            {error && (
-              <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-2 p-3 rounded-lg bg-red-500/[0.06] border border-red-500/10 text-red-400 text-xs font-mono">
-                <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
-                {error}
-              </motion.div>
-            )}
-
+            {/* GitHub login */}
             <button
-              type="submit"
-              disabled={loading}
-              className="w-full h-11 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm cursor-pointer active:scale-[0.98] hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] group relative overflow-hidden"
+              onClick={handleGithubLogin}
+              disabled={githubLoading}
+              className="w-full flex items-center justify-center gap-2.5 h-10 rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] hover:border-violet-500/30 transition-all text-sm font-medium text-gray-300 cursor-pointer disabled:opacity-50 group mb-5 hover:shadow-[0_0_20px_rgba(139,92,246,0.06)]"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-fuchsia-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <span className="relative z-10 flex items-center gap-2">
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
-                  <>
-                    {tc("signIn")}
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                  </>
-                )}
+              <GithubIcon />
+              <span className="group-hover:text-white transition-colors">
+                {githubLoading ? tc("redirecting") : t("continueGithub")}
               </span>
             </button>
-          </form>
+
+            {/* Divider */}
+            <div className="relative mb-5">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/[0.06]" />
+              </div>
+              <div className="relative flex justify-center text-[10px] uppercase tracking-[0.2em] font-mono">
+                <span className="px-4 bg-[#0A0A0A] text-gray-700">{tc("or")}</span>
+              </div>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleLogin} className="space-y-3.5">
+              <div className="space-y-1">
+                <label className="text-[10px] font-mono font-medium text-gray-600 uppercase tracking-[0.15em]">{tc("email")}</label>
+                <div className="relative group">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-700 group-focus-within:text-violet-400 transition-colors duration-300" />
+                  <input
+                    ref={emailRef}
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder={t("emailPlaceholder")}
+                    required
+                    autoComplete="email"
+                    className="w-full h-10 pl-9 pr-4 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder:text-gray-800 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.06),0_0_20px_rgba(139,92,246,0.04)] transition-all duration-300 text-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] font-mono font-medium text-gray-600 uppercase tracking-[0.15em]">{tc("password")}</label>
+                  <Link href="/forgot-password" className="text-[10px] text-violet-500/70 hover:text-violet-400 transition-colors font-mono tracking-wider">{t("forgotPassword")}</Link>
+                </div>
+                <div className="relative group">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-700 group-focus-within:text-violet-400 transition-colors duration-300" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+                    required
+                    autoComplete="current-password"
+                    className="w-full h-10 pl-9 pr-10 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder:text-gray-800 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.06),0_0_20px_rgba(139,92,246,0.04)] transition-all duration-300 text-sm"
+                  />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700 hover:text-gray-500 transition-colors">
+                    {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+              </div>
+
+              {error && (
+                <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-2 p-2.5 rounded-lg bg-red-500/[0.06] border border-red-500/10 text-red-400 text-xs font-mono">
+                  <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                  {error}
+                </motion.div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full h-10 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm cursor-pointer active:scale-[0.98] hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] group relative overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-fuchsia-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="relative z-10 flex items-center gap-2">
+                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
+                    <>
+                      {tc("signIn")}
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </>
+                  )}
+                </span>
+              </button>
+            </form>
+          </div>
 
           {/* Sign up link */}
-          <p className="text-center text-sm text-gray-600 mt-6">
+          <p className="text-center text-xs text-gray-600 mt-5">
             {t("noAccount")}{" "}
             <Link href="/register" className="text-violet-400 hover:text-violet-300 transition-colors font-medium">{t("signUp")}</Link>
           </p>
 
           {/* Bottom security bar */}
-          <div className="mt-10 pt-4 border-t border-white/[0.03]">
+          <div className="mt-8 pt-3 border-t border-white/[0.03]">
             <div className="flex items-center justify-center gap-6 text-[9px] font-mono text-white/15 uppercase tracking-widest">
               <span>256-BIT SSL</span>
               <span className="text-violet-500/30">&bull;</span>
