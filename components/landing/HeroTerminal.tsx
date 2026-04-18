@@ -38,7 +38,7 @@ const codeSnippets = [
     icon: TerminalIcon,
     color: "text-green-400",
     code: `export ANTHROPIC_BASE_URL=\\
-  https://api.hapuppy.com
+  https://beta.hapuppy.com
 export ANTHROPIC_AUTH_TOKEN=sk-hapuppy-...
 
 claude
@@ -56,7 +56,7 @@ claude
     code: `from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://api.hapuppy.com/v1",
+    base_url="https://beta.hapuppy.com/v1",
     api_key="sk-hapuppy-..."
 )
 
@@ -76,7 +76,7 @@ print(response.choices[0].message.content)`,
     code: `import OpenAI from 'openai';
 
 const client = new OpenAI({
-  baseURL: 'https://api.hapuppy.com/v1',
+  baseURL: 'https://beta.hapuppy.com/v1',
   apiKey: process.env.HAPUPPY_KEY
 });
 

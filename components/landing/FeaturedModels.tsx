@@ -332,7 +332,7 @@ export function FeaturedModels() {
   const others = FEATURED_MODELS.filter((m) => !m.badge);
 
   return (
-    <section id="models" className="pt-14 sm:pt-20 pb-24 sm:pb-32 px-4 scroll-mt-20 relative overflow-hidden">
+    <section id="models" className="py-20 sm:py-28 px-4 scroll-mt-20 relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-violet-500/[0.03] rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-cyan-500/[0.02] rounded-full blur-[120px] pointer-events-none" />

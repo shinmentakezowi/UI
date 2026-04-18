@@ -10,8 +10,8 @@ export interface FeaturedModel {
 
 export const FEATURED_MODELS: FeaturedModel[] = [
   {
-    id: "claude-opus-4-6",
-    name: "Claude Opus 4.6",
+    id: "claude-opus-4-7",
+    name: "Claude Opus 4.7",
     provider: "Anthropic",
     description:
       "Anthropic's most capable model. State-of-the-art coding, reasoning, and agentic performance.",
@@ -38,8 +38,8 @@ export const FEATURED_MODELS: FeaturedModel[] = [
     context: "1M",
   },
   {
-    id: "glm-5",
-    name: "GLM-5",
+    id: "glm-5.1",
+    name: "GLM-5.1",
     provider: "Zhipu",
     description:
       "Zhipu AI's flagship model with strong bilingual capabilities and competitive coding performance.",

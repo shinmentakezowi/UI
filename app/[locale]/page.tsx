@@ -2,8 +2,6 @@ import { Navbar } from "@/components/Navbar";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { FeaturedModels } from "@/components/landing/FeaturedModels";
 import { WhyUs } from "@/components/landing/WhyUs";
-import { QuickStart } from "@/components/landing/QuickStart";
-import { LandingPricing } from "@/components/landing/LandingPricing";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { Footer } from "@/components/landing/Footer";
 import { HeroBackground } from "@/components/HeroBackground";
@@ -75,8 +73,6 @@ export default async function LandingPage() {
 
       <FeaturedModels />
       <WhyUs />
-      <QuickStart />
-      <LandingPricing />
       <FAQSection />
       <Footer />
       <ScrollToTop />

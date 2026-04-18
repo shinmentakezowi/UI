@@ -6,7 +6,7 @@ export async function Footer() {
   const tc = await getTranslations("common");
 
   return (
-    <footer className="border-t border-white/[0.05] pt-12 pb-0 overflow-hidden">
+    <footer className="border-t border-white/[0.05] pt-20 sm:pt-28 pb-0 overflow-hidden">
       <div className="max-w-3xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 text-xs text-zinc-600">
         <div className="flex items-center gap-2">
           <img src="/favicon.svg" alt="" width={18} height={18} className="rounded" />

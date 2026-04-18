@@ -106,7 +106,7 @@ function getModelSpec(id: string, provider: string): ModelSpec {
 }
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.hapuppy.com";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://beta.hapuppy.com";
 
 interface ModelSlots {
   opus: string;

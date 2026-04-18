@@ -46,7 +46,7 @@ export async function QuickStart() {
         <div className="grid sm:grid-cols-2 gap-4">
           <CodeBlock title="Claude Code / Shell">
 {`export ANTHROPIC_BASE_URL=\\
-  https://api.hapuppy.com
+  https://beta.hapuppy.com
 export ANTHROPIC_AUTH_TOKEN=sk-hapuppy-your-key
 
 claude`}
@@ -56,7 +56,7 @@ claude`}
 
 client = OpenAI(
   api_key="sk-hapuppy-your-key",
-  base_url="https://api.hapuppy.com/v1",
+  base_url="https://beta.hapuppy.com/v1",
 )
 
 resp = client.chat.completions.create(

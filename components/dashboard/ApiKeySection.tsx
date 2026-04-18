@@ -26,7 +26,7 @@ import { useTranslations } from "next-intl";
 import { maskKey } from "@/lib/format";
 import type { KeyData } from "@/lib/types";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.hapuppy.com";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://beta.hapuppy.com";
 
 type SetupTab = "claude-code" | "curl";
 
